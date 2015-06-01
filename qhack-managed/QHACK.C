@@ -1,5 +1,5 @@
-/*                               -*- Mode: C -*- 
- * qhack.c -- 
+/*                               -*- Mode: C -*-
+ * qhack.c --
  * ITIID           : $ITI$ $Header $__Header$
  * Author          : Thomas Biskup
  * Created On      : Sun Dec 29 22:55:15 1996
@@ -29,97 +29,82 @@
  * $3 (as of January, 1997).
  */
 
-/*
- * Includes.
- */
+ /*
+  * Includes.
+  */
 
 #include <stdio.h>
-
 #include "qhack.h"
+namespace QHack {
+
+	/*
+	 * Draw a title screen.
+	 */
+	void Program::InitScreen(void)
+	{
+		char s[80];
+
+		clear_screen();
+		sprintf(s, string("-----====<<<<< QHack %d.%d >>>>>====-----", MAJOR_VERSION, MINOR_VERSION));
+		cursor(0, 3);
+		prtstr("%s", s);
+		cursor(16, 5);
+		prtstr("(The Quickest Roguelike Gaming Hack on the Net)");
+		cursor(19, 8);
+		prtstr("(C) Copyright 1996, 1997 by Thomas Biskup.");
+		cursor(30, 9);
+		prtstr("All Rights Reserved.");
+		cursor(0, 24);
+		prtstr("Email comments/suggestions/bug reports to ............... rpg@saranxis.ruhr.de");
+		getkey();
+	}
 
 
+	/*
+	* The main function.
+	*/
 
-/*
- * Local prototypes.
- */
+	int Program::Main(int argc, char **argv)
+	{
+		/* Print startup message. */
+		printf("\nQuickHack Version 0.1\n");
+		printf("(C) Copyright 1996, 1997 by Thomas Biskup.\n\n");
+		printf("Current dungeon size: %ld.\n"
+			, (long int) sizeof(struct DungeonComplex));
+		printf("Current monster size: %ld.\n"
+			, (long int) sizeof(struct monster_struct));
+		printf("Current section size: %ld.\n"
+			, (long int) sizeof(struct QHack::Section));
+		printf("\n");
 
-void init_screen(void);
+		if (argc > 1)
+			return 0;
 
+		stdprtstr("Setting up the game...");
 
-/*
- * Local functions.
- */
+		/* Initialize everything. */
+		stdprtstr(".");
+		init_rand();
+		stdprtstr(".");
+		init_player();
+		stdprtstr(".");
+		init_monsters();
+		stdprtstr(".");
+		init_dungeon();
+		stdprtstr(".");
+		init_io();
+		InitScreen();
 
+		/* Play the game. */
+		play();
 
-/*
- * Draw a title screen.
- */
+		/* Clean up. */
+		clean_up_io();
 
-void init_screen(void)
-{
-  char s[80];
-  
-  clear_screen();
-  sprintf(s, string("-----====<<<<< QHack %d.%d >>>>>====-----", MAJOR_VERSION, MINOR_VERSION));
-  cursor(0, 3);
-  prtstr("%s", s);
-  cursor(16, 5);
-  prtstr("(The Quickest Roguelike Gaming Hack on the Net)");
-  cursor(19, 8);
-  prtstr("(C) Copyright 1996, 1997 by Thomas Biskup.");
-  cursor(30, 9);
-  prtstr("All Rights Reserved.");
-  cursor(0, 24);
-  prtstr("Email comments/suggestions/bug reports to ............... rpg@saranxis.ruhr.de");
-  getkey();
+		/* Be done. */
+		return 0;
+	}
 }
-
-
-/*
- * The main function.
- */
-
-int main(int argc, char **argv)
-{
-  /* Print startup message. */
-  printf("\nQuickHack Version 0.1\n");
-  printf("(C) Copyright 1996, 1997 by Thomas Biskup.\n\n");
-  printf("Current dungeon size: %ld.\n"
-	 , (long int) sizeof(struct dungeon_complex));
-  printf("Current monster size: %ld.\n"
-	 , (long int) sizeof(struct monster_struct));
-  printf("Current section size: %ld.\n"
-	 , (long int) sizeof(struct section));
-  printf("\n");
-  
-  if (argc > 1)
-    return 0;
-  
-  stdprtstr("Setting up the game...");
-  
-  /* Initialize everything. */
-  stdprtstr(".");
-  init_rand();
-  stdprtstr(".");
-  init_player();
-  stdprtstr(".");
-  init_monsters();
-  stdprtstr(".");
-  init_dungeon();
-  stdprtstr(".");
-  init_io();
-  init_screen();
-  
-  /* Play the game. */
-  play();
-
-  /* Clean up. */
-  clean_up_io();
-  
-  /* Be done. */
-  return 0;
+int main(int argc, char **argv) {
+	return QHack::Program::Main(argc, argv);
 }
-
-
-
-

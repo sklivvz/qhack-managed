@@ -37,7 +37,7 @@ static byte map[MAP_W][MAP_H];
  * The complete dungeon structure
  */
 
-struct dungeon_complex d;
+struct QHack::DungeonComplex d;
 
 
 /*

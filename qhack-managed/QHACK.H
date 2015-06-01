@@ -35,79 +35,85 @@
 #include "player.h"
 #include "sysdep.h"
 
+namespace QHack {
+
+	/*
+	* One section of a level: each dungeon map consists of NSECT_W * NSECT_H
+	* sections (see config.g).  A section either contains one room with up
+	* to four doors or a tunnel intersection.
+	*
+	* NOTE: The use of a sectioning approach prevents things like digging, etc.
+	*/
+
+	public struct Section
+	{
+		/* Room available? */
+		_BOOL exists;
+
+		/* Room coordinates. */
+		coord rx1, rx2, ry1, ry2;
+
+		/* Door positions. */
+		coord dx[4], dy[4];
+
+		/* Door types. */
+		byte dt[4];
+	};
+
+	/*
+	* QHack uses one large structure for the complete dungeon.  There are
+	* no pointers or other fancy stuff involved since this game should be
+	* simple and easy to use.
+	*
+	* Naturally this prevents some useful things and is not the way a big
+	* roguelike game should be written (you sacrifice too much in flexibility),
+	* but since it's easy to use I headed into this direction.
+	*/
+
+	public struct DungeonComplex
+	{
+		/* The current level number. */
+		byte dl;
+
+		/* NSECT_W * NSECT_H sections for each level. */
+		struct QHack::Section s[MAX_DUNGEON_LEVEL][NSECT_W][NSECT_H];
+
+		/* Coordinates for stairways. */
+		coord stxu[MAX_DUNGEON_LEVEL];
+		coord styu[MAX_DUNGEON_LEVEL];
+		coord stxd[MAX_DUNGEON_LEVEL - 1];
+		coord styd[MAX_DUNGEON_LEVEL - 1];
+
+		/* Player coordinates. */
+		coord px, py;
+
+		/* Last player coordinates. */
+		coord opx, opy;
+
+		/* The knowledge map. */
+		byte known[MAX_DUNGEON_LEVEL][MAP_BIT_W][MAP_H];
+
+		/* The panel positions. */
+		coord psx, psy;
+
+		/* Level was already visited? */
+		_BOOL visited[MAX_DUNGEON_LEVEL];
+
+		/* The player data. */
+		struct player pc;
+	};
 
 
-/*
- * One section of a level: each dungeon map consists of NSECT_W * NSECT_H
- * sections (see config.g).  A section either contains one room with up
- * to four doors or a tunnel intersection.
- *
- * NOTE: The use of a sectioning approach prevents things like digging, etc.
- */
-
-struct section
-{
-  /* Room available? */
-  _BOOL exists;
-
-  /* Room coordinates. */
-  coord rx1, rx2, ry1, ry2;
-
-  /* Door positions. */
-  coord dx[4], dy[4];
-
-  /* Door types. */
-  byte dt[4];
-};
-
-
-/*
- * QHack uses one large structure for the complete dungeon.  There are
- * no pointers or other fancy stuff involved since this game should be
- * simple and easy to use.
- *
- * Naturally this prevents some useful things and is not the way a big
- * roguelike game should be written (you sacrifice too much in flexibility),
- * but since it's easy to use I headed into this direction.
- */
-
-struct dungeon_complex
-{
-  /* The current level number. */
-  byte dl;
-
-  /* NSECT_W * NSECT_H sections for each level. */
-  struct section s[MAX_DUNGEON_LEVEL][NSECT_W][NSECT_H];
-
-  /* Coordinates for stairways. */
-  coord stxu[MAX_DUNGEON_LEVEL];
-  coord styu[MAX_DUNGEON_LEVEL];
-  coord stxd[MAX_DUNGEON_LEVEL - 1];
-  coord styd[MAX_DUNGEON_LEVEL - 1];
-
-  /* Player coordinates. */
-  coord px, py;
-
-  /* Last player coordinates. */
-  coord opx, opy;
-
-  /* The knowledge map. */
-  byte known[MAX_DUNGEON_LEVEL][MAP_BIT_W][MAP_H];
-
-  /* The panel positions. */
-  coord psx, psy;
-
-  /* Level was already visited? */
-  _BOOL visited[MAX_DUNGEON_LEVEL];
-
-  /* The player data. */
-  struct player pc;
-};
-
-
+	public class Program
+	{
+	public:
+		static int Program::Main(int argc, char **argv);
+	private:
+		static void InitScreen(void);
+	};
+}
 /* The global dungeon structure. */
-extern struct dungeon_complex d;
-
+extern struct QHack::DungeonComplex d;
 #endif
 
 
