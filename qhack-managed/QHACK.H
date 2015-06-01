@@ -29,7 +29,6 @@
 
 #include "config.h"
 #include "dungeon.h"
-#include "error.h"
 #include "game.h"
 #include "misc.h"
 #include "monster.h"

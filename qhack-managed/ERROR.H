@@ -31,11 +31,11 @@ namespace QHack {
 	public class Error
 	{
 	public:
-		Error();
-		~Error();
-		static void die(char *message);
+		static void Die(char *message);
 
 	private:
+		Error();
+		~Error();
 
 	};
 }

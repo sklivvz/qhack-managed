@@ -35,7 +35,7 @@ namespace QHack {
 	/*
 	* Die with an error message.
 	*/
-	void Error::die(char *message) {
+	void Error::Die(char *message) {
 		fprintf(stderr, "QHack -- Internal error!\n*** Bug: %s.\n\n", message);
 		exit(1);
 	}
