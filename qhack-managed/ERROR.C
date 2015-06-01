@@ -1,5 +1,5 @@
-/*                               -*- Mode: C -*- 
- * error.c -- 
+/*                               -*- Mode: C -*-
+ * error.c --
  * ITIID           : $ITI$ $Header $__Header$
  * Author          : Thomas Biskup
  * Created On      : Mon Dec 30 00:16:03 1996
@@ -21,15 +21,22 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "ERROR.H"
+namespace QHack {
 
-#include "error.h"
+	Error::Error()
+	{
+	}
 
-/*
- * Die with an error message.
- */
+	Error::~Error()
+	{
+	}
 
-void die(char *message)
-{
-  fprintf(stderr, "QHack -- Internal error!\n*** Bug: %s.\n\n", message);
-  exit(1);
+	/*
+	* Die with an error message.
+	*/
+	void Error::die(char *message) {
+		fprintf(stderr, "QHack -- Internal error!\n*** Bug: %s.\n\n", message);
+		exit(1);
+	}
 }

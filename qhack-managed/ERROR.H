@@ -26,7 +26,17 @@
 /*
  * Global prototypes.
  */
+namespace QHack {
 
-void die(char *);
+	public class Error
+	{
+	public:
+		Error();
+		~Error();
+		static void die(char *message);
 
+	private:
+
+	};
+}
 #endif

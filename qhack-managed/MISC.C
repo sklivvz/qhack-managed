@@ -29,7 +29,7 @@
 #include <string.h>
 
 #include "qhack.h"
-
+using namespace QHack;
 
 /*
  * Local variables.
@@ -204,7 +204,7 @@ int16 dice(char *dice)
   if (!*c)
     return amount;
   if (*c != 'd')
-    die("Illegal die format (1)");
+	  Error::die("Illegal die format (1)");
   c++;
   while (*c && isdigit(*c))
   {
@@ -219,7 +219,7 @@ int16 dice(char *dice)
     else if (*c == '+')
       prefix = +1;
     else
-      die("Illegal die roll format (2)");
+		Error::die("Illegal die roll format (2)");
     c++;
     while (*c && isdigit(*c))
     {
@@ -228,7 +228,7 @@ int16 dice(char *dice)
       c++;
     }
     if (*c)
-      die("Illegal die roll format (3)");
+		Error::die("Illegal die roll format (3)");
   }
   
   for (i = 0; i < amount; i++)

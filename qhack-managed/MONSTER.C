@@ -31,6 +31,7 @@
  */
 
 #include "qhack.h"
+using namespace QHack;
 
 
 /*
@@ -158,7 +159,7 @@ void create_population(void)
 
     /* Paranoia. */
     if (midx == -1)
-      die("Could not create the initial monster population");
+      QHack::Error::die("Could not create the initial monster population");
 
     /* Create a new monster. */
     create_monster_in(midx);
@@ -353,7 +354,7 @@ struct monster *get_monster_at(coord x, coord y)
 {
   /* Paranoia. */
   if (midx[x][y] == -1)
-    die("No monster to retrieve");
+    Error::die("No monster to retrieve");
 
   /* Return the requested monster. */
   return &m.m[d.dl][midx[x][y]];
