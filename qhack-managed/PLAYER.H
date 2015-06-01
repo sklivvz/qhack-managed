@@ -28,8 +28,8 @@
  */
 
 #include "config.h"
-
-
+#include "SYSDEP.H"
+using namespace QHack;
 
 /*
  * Some more constants.

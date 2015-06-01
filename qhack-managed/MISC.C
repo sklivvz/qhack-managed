@@ -79,16 +79,16 @@ namespace QHack {
 			more();
 
 		/* Position the cursor. */
-		cursor(0, 0);
+		SysDep::cursor(0, 0);
 
 		/* Reset the color. */
-		set_color(C_LIGHT_GRAY);
+		SysDep::set_color(C_LIGHT_GRAY);
 
 		/* Display the message. */
-		prtstr("%s", buffer);
+		SysDep::prtstr("%s", buffer);
 
 		/* Update the screen. */
-		update();
+		SysDep::update();
 
 		/* Note the new message in the buffer. */
 		mbuffer_full = TRUE;
@@ -122,10 +122,10 @@ namespace QHack {
 
 	void more(void)
 	{
-		cursor(mbuffer_x, 0);
-		set_color(C_WHITE);
-		prtstr("(more)");
-		while (getkey() != ' ');
+		SysDep::cursor(mbuffer_x, 0);
+		SysDep::set_color(C_WHITE);
+		SysDep::prtstr("(more)");
+		while (SysDep::getkey() != ' ');
 		Misc::clear_messages();
 	}
 
@@ -137,8 +137,8 @@ namespace QHack {
 
 	void Misc::clear_messages(void)
 	{
-		cursor(0, 0);
-		clear_to_eol();
+		SysDep::cursor(0, 0);
+		SysDep::clear_to_eol();
 		mbuffer_full = FALSE;
 		mbuffer_x = 0;
 	}
@@ -157,7 +157,7 @@ namespace QHack {
 		*y = yp;
 
 		message("Which direction? ");
-		c = getkey();
+		c = SysDep::getkey();
 		clear_messages();
 
 		switch (c)
@@ -234,7 +234,7 @@ namespace QHack {
 		}
 
 		for (i = 0; i < amount; i++)
-			roll += rand_byte(sides) + 1;
+			roll += SysDep::rand_byte(sides) + 1;
 
 		return (int16) (roll + (prefix * bonus));
 	}

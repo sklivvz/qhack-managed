@@ -23,13 +23,6 @@
 
 #define __DUNGEON__
 
-/*
- * Global includes.
- */
-
-#include "sysdep.h"
-
-
 
 /*
  * Directions for the dungeon.

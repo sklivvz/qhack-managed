@@ -1,5 +1,5 @@
-/*                               -*- Mode: C -*- 
- * sysdep.h -- 
+/*                               -*- Mode: C -*-
+ * sysdep.h --
  * ITIID           : $ITI$ $Header $__Header$
  * Author          : Thomas Biskup
  * Created On      : Sun Dec 29 21:52:36 1996
@@ -23,88 +23,42 @@
 
 #define __SYSDEP__
 
-/*
- * Includes.
- */
+ /*
+  * Includes.
+  */
 
 #include "config.h"
 
 
-/*
- * Standard types.
- */
 
-typedef signed char    byte;
-typedef unsigned char  ubyte;
-typedef short          int16;
-typedef unsigned short uint16;
-typedef long           int32;
-typedef unsigned long  uint32;
+namespace QHack {
+	/*
+	 * Global functions.
+	 */
+	public class SysDep
+	{
+	public:
+		static byte rand_byte(byte);
+		static uint16 rand_int(uint16);
+		static uint32 rand_long(uint32);
 
+		static char getkey(void);
 
+		static void init_rand(void);
+		static void init_io();
+		static void clean_up_io();
+		static void clear_screen();
+		static void cursor(byte, byte);
+		static void prtchar(byte);
+		static void prtstr(char *, ...);
+		static void stdprtstr(char *, ...);
+		static void update(void);
+		static void clear_to_eol(void);
+		static void set_color(byte);
 
-/*
- * Special types.
- */
+	private:
 
-typedef unsigned int   rand_type;
-typedef byte           _BOOL;
+	};
 
-/* Guess the size for coordinate variables. */
-#if (MAP_W > 127) || (MAP_H > 127)
-typedef int16          coord;
-#else
-typedef byte           coord;
-#endif
-
-/*
- * Special constants.
- */
-
-#ifndef TRUE
-# define TRUE  ((_BOOL) (1 > 0))
-#endif
-
-#ifndef FALSE
-# define FALSE ((_BOOL) (0 > 1))
-#endif
-
-
-
-/*
- * Color constants.
- */
-
-
-enum color_types
-{
-  C_BLACK, C_BLUE, C_GREEN, C_CYAN, C_RED, C_MAGENTA,
-  C_BROWN, C_LIGHT_GRAY, C_DARK_GRAY, C_LIGHT_BLUE,
-  C_LIGHT_GREEN, C_LIGHT_CYAN, C_LIGHT_RED, C_LIGHT_MAGENTA,
-  C_YELLOW, C_WHITE, MAX_COLOR
-};
-
-
-/*
- * Global functions.
- */
-
-byte rand_byte(byte);
-uint16 rand_int(uint16);
-uint32 rand_long(uint32);
-
-char getkey(void);
-
-void init_rand(void);
-void init_io();
-void clean_up_io();
-void clear_screen();
-void cursor(byte, byte);
-void prtchar(byte);
-void prtstr(char *, ...);
-void stdprtstr(char *, ...);
-void update(void);
-void clear_to_eol(void);
-void set_color(byte);
-
+}
 #endif

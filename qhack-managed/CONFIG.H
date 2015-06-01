@@ -143,4 +143,59 @@
 /* The number of training units you can distribute. */
 #define TUNITS 100
 
+/*
+* Standard types.
+*/
+
+typedef signed char    byte;
+typedef unsigned char  ubyte;
+typedef short          int16;
+typedef unsigned short uint16;
+typedef long           int32;
+typedef unsigned long  uint32;
+
+
+
+/*
+* Special types.
+*/
+
+typedef unsigned int   rand_type;
+typedef byte           _BOOL;
+
+/* Guess the size for coordinate variables. */
+#if (MAP_W > 127) || (MAP_H > 127)
+typedef int16          coord;
+#else
+typedef byte           coord;
+#endif
+
+/*
+* Special constants.
+*/
+
+#ifndef TRUE
+# define TRUE  ((_BOOL) (1 > 0))
+#endif
+
+#ifndef FALSE
+# define FALSE ((_BOOL) (0 > 1))
+#endif
+
+
+
+/*
+* Color constants.
+*/
+
+
+enum color_types
+{
+	C_BLACK, C_BLUE, C_GREEN, C_CYAN, C_RED, C_MAGENTA,
+	C_BROWN, C_LIGHT_GRAY, C_DARK_GRAY, C_LIGHT_BLUE,
+	C_LIGHT_GREEN, C_LIGHT_CYAN, C_LIGHT_RED, C_LIGHT_MAGENTA,
+	C_YELLOW, C_WHITE, MAX_COLOR
+};
+
+
 #endif

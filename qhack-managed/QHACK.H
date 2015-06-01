@@ -32,7 +32,6 @@
 #include "game.h"
 #include "monster.h"
 #include "player.h"
-#include "sysdep.h"
 
 namespace QHack {
 

@@ -79,7 +79,7 @@ void play(void)
 	 */
 
 	 /* Setup the screen. */
-	clear_screen();
+	SysDep::clear_screen();
 
 	do
 	{
@@ -89,18 +89,18 @@ void play(void)
 
 		/* Display the player and center the cursor. */
 		map_cursor(d.px, d.py);
-		set_color(C_WHITE);
-		prtchar('@');
+		SysDep::set_color(C_WHITE);
+		SysDep::prtchar('@');
 		map_cursor(d.px, d.py);
 
 		/* Refresh the IO stuff. */
-		update();
+		SysDep::update();
 
 		/* Continue to walk or read a key. */
 		if (!walk_mode)
 		{
 			walk_steps = 0;
-			c = getkey();
+			c = SysDep::getkey();
 		}
 
 		/* The message line should be cleared in any case. */
@@ -399,7 +399,7 @@ void redraw(void)
 	paint_map();
 	update_necessary = TRUE;
 	update_player_status();
-	update();
+	SysDep::update();
 }
 
 

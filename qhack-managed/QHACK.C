@@ -44,19 +44,19 @@ namespace QHack {
 	{
 		char s[80];
 
-		clear_screen();
+		SysDep::clear_screen();
 		sprintf(s, Misc::string("-----====<<<<< QHack %d.%d >>>>>====-----", MAJOR_VERSION, MINOR_VERSION));
-		cursor(0, 3);
-		prtstr("%s", s);
-		cursor(16, 5);
-		prtstr("(The Quickest Roguelike Gaming Hack on the Net)");
-		cursor(19, 8);
-		prtstr("(C) Copyright 1996, 1997 by Thomas Biskup.");
-		cursor(30, 9);
-		prtstr("All Rights Reserved.");
-		cursor(0, 24);
-		prtstr("Email comments/suggestions/bug reports to ............... rpg@saranxis.ruhr.de");
-		getkey();
+		SysDep::cursor(0, 3);
+		SysDep::prtstr("%s", s);
+		SysDep::cursor(16, 5);
+		SysDep::prtstr("(The Quickest Roguelike Gaming Hack on the Net)");
+		SysDep::cursor(19, 8);
+		SysDep::prtstr("(C) Copyright 1996, 1997 by Thomas Biskup.");
+		SysDep::cursor(30, 9);
+		SysDep::prtstr("All Rights Reserved.");
+		SysDep::cursor(0, 24);
+		SysDep::prtstr("Email comments/suggestions/bug reports to ............... rpg@saranxis.ruhr.de");
+		SysDep::getkey();
 	}
 
 
@@ -80,26 +80,26 @@ namespace QHack {
 		if (argc > 1)
 			return 0;
 
-		stdprtstr("Setting up the game...");
+		SysDep::stdprtstr("Setting up the game...");
 
 		/* Initialize everything. */
-		stdprtstr(".");
-		init_rand();
-		stdprtstr(".");
+		SysDep::stdprtstr(".");
+		SysDep::init_rand();
+		SysDep::stdprtstr(".");
 		init_player();
-		stdprtstr(".");
+		SysDep::stdprtstr(".");
 		init_monsters();
-		stdprtstr(".");
+		SysDep::stdprtstr(".");
 		init_dungeon();
-		stdprtstr(".");
-		init_io();
+		SysDep::stdprtstr(".");
+		SysDep::init_io();
 		InitScreen();
 
 		/* Play the game. */
 		play();
 
 		/* Clean up. */
-		clean_up_io();
+		SysDep::clean_up_io();
 
 		/* Be done. */
 		return 0;

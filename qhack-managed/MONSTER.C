@@ -246,7 +246,7 @@ byte random_monster_type(void)
   int32 roll;
   byte i;
 
-  roll = rand_long(total_rarity) + 1;
+  roll = SysDep::rand_long(total_rarity) + 1;
   i = 0;
 
   while (roll > monster_rarity(i))
@@ -292,8 +292,8 @@ void get_monster_coordinates(coord *x, coord *y)
 {
   do
   {
-    *x = rand_int(MAP_W);
-    *y = rand_int(MAP_H);
+    *x = SysDep::rand_int(MAP_W);
+    *y = SysDep::rand_int(MAP_H);
   }
   while (tile_at(*x, *y) != FLOOR ||
 	 los(*x, *y) ||

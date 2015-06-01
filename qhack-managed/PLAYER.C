@@ -129,9 +129,9 @@ void update_player_status(void)
 {
   if (update_necessary)
   {
-    cursor(0, 24);
-    set_color(C_LIGHT_GRAY);
-    prtstr("%s   St:%d  In:%d  Dx:%d  To:%d  Ma:%d  H:%d(%d)  P:%d(%d)  X:%ld"
+    SysDep::cursor(0, 24);
+	SysDep::set_color(C_LIGHT_GRAY);
+	SysDep::prtstr("%s   St:%d  In:%d  Dx:%d  To:%d  Ma:%d  H:%d(%d)  P:%d(%d)  X:%ld"
 	   , d.pc.name
 	   , (int) d.pc.attribute[STRENGTH]
 	   , (int) d.pc.attribute[INTELLIGENCE]
@@ -143,7 +143,7 @@ void update_player_status(void)
 	   , (int) d.pc.power
 	   , (int) d.pc.max_power
 	   , (long) d.pc.experience);
-    clear_to_eol();
+	SysDep::clear_to_eol();
     
     update_necessary = FALSE;
   }
@@ -193,7 +193,7 @@ void adjust_training(void)
     /* Draw the menu. */
     if (do_redraw)
     {
-      set_color(C_LIGHT_GRAY);
+		SysDep::set_color(C_LIGHT_GRAY);
       
       training_length = 0;
       for (i = 0; i < MAX_T_SKILL; i++)
@@ -203,8 +203,8 @@ void adjust_training(void)
 					       d.pc.tskill_training[i])));
       for (i = 0; i < MAX_T_SKILL; i++)
       {
-	cursor(3, i);
-	prtstr("    %*s: %*ld of %*ld [%*d]: %d   "
+		  SysDep::cursor(3, i);
+		  SysDep::prtstr("    %*s: %*ld of %*ld [%*d]: %d   "
 	       , length
 	       , tskill_s[i]
 	       , exp_length
@@ -215,20 +215,20 @@ void adjust_training(void)
 	       , (int) d.pc.tskill_training[i]
 	       , (int) current_level(i));
       }
-      cursor(0, 24);
-      prtstr(" [iI] Up -- [kK] Down -- [jJ] Decrease -- [lL] Increase");
-      prtstr(" -- Units: %d", (int) remaining_units);
-      clear_to_eol();
+	  SysDep::cursor(0, 24);
+	  SysDep::prtstr(" [iI] Up -- [kK] Down -- [jJ] Decrease -- [lL] Increase");
+	  SysDep::prtstr(" -- Units: %d", (int) remaining_units);
+	  SysDep::clear_to_eol();
       do_redraw = FALSE;
     }
       
-    cursor(4, pos);
-    prtstr("->");
-    update();
-    c = getkey();
-    cursor(4, pos);
-    prtstr("  ");
-    update();
+	SysDep::cursor(4, pos);
+	SysDep::prtstr("->");
+	SysDep::update();
+    c = SysDep::getkey();
+	SysDep::cursor(4, pos);
+	SysDep::prtstr("  ");
+	SysDep::update();
       
     switch (c)
     {
