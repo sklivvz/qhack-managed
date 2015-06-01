@@ -23,121 +23,138 @@
 
 #define __MONSTER__
 
-/*
- * Constants for various monster states.
- */
+#include "CONFIG.H"
+namespace QHack {
 
-enum monster_state
-{
-  ASLEEP, NEUTRAL, ANGRY
-};
+	/*
+	 * Constants for various monster states.
+	 */
 
-
-/*
- * Constants for monster frequencies.
- */
-
-enum monster_rarity
-{
-  UNIQUE = 0, VERY_RARE = 100, RARE = 500, UNCOMMON = 1000, COMMON = 2000,
-  VERY_COMMON = 3000
-};
+	enum monster_state
+	{
+		ASLEEP, NEUTRAL, ANGRY
+	};
 
 
-/*
- * A structure for a given monster.
- */
+	/*
+	 * Constants for monster frequencies.
+	 */
 
-struct monster
-{
-  /* Is the entry occupied by a monster? */
-  _BOOL used;
-
-  /* Monster type. */
-  byte midx;
-
-  /* Position on the map. */
-  coord x, y;
-
-  /* Hitpoint data. */
-  int16 hp, max_hp;
-
-  /* The current state (see above). */
-  byte state;
-};
+	enum monster_rarity
+	{
+		UNIQUE = 0, VERY_RARE = 100, RARE = 500, UNCOMMON = 1000, COMMON = 2000,
+		VERY_COMMON = 3000
+	};
 
 
+	/*
+	 * A structure for a given monster.
+	 */
 
-/*
- * The structure for a basic monster.
- */
+	struct monster
+	{
+		/* Is the entry occupied by a monster? */
+		_BOOL used;
 
-struct monster_def
-{
-  /* The character symbol. */
-  char symbol;
+		/* Monster type. */
+		byte midx;
 
-  /* The color of the monster. */
-  byte color;
+		/* Position on the map. */
+		coord x, y;
 
-  /* It's name. */
-  char *name;
+		/* Hitpoint data. */
+		int16 hp, max_hp;
 
-  /* Armor class. */
-  byte ac;
-
-  /* Initial hitpoints. */
-  char *hits;
-
-  /* Number of attacks. */
-  byte attacks;
-
-  /* To-hit bonus. */
-  byte to_hit;
-
-  /* Damage dice. */
-  char *damage;
-
-  /* Frequency for the basic level. */
-  int16 rarity;
-};
-
-
-struct monster_struct
-{
-  /* Index to the first empty monster slow; later ones use 'midx'. */
-  byte eidx[MAX_DUNGEON_LEVEL];
-
-  /* The monster slots for each level. */
-  struct monster m[MAX_DUNGEON_LEVEL][MONSTERS_PER_LEVEL];
-};
-
-
-/* The global monster structure. */
-extern struct monster_struct m;
+		/* The current state (see above). */
+		byte state;
+	};
 
 
 
-/*
- * Global functions.
- */
+	/*
+	 * The structure for a basic monster.
+	 */
 
-_BOOL los(coord, coord);
-_BOOL is_monster_at(coord, coord);
+	struct monster_def
+	{
+		/* The character symbol. */
+		char symbol;
 
-byte monster_tile(byte);
-byte monster_color(byte);
+		/* The color of the monster. */
+		byte color;
 
-struct monster *get_monster_at(coord, coord);
+		/* It's name. */
+		char *name;
 
-void init_monsters(void);
-void initialize_monsters(void);
-void build_monster_map(void);
-void create_monster_in(byte);
-void create_population(void);
-void move_monsters(void);
+		/* Armor class. */
+		byte ac;
 
+		/* Initial hitpoints. */
+		char *hits;
+
+		/* Number of attacks. */
+		byte attacks;
+
+		/* To-hit bonus. */
+		byte to_hit;
+
+		/* Damage dice. */
+		char *damage;
+
+		/* Frequency for the basic level. */
+		int16 rarity;
+	};
+
+
+	struct monster_struct
+	{
+		/* Index to the first empty monster slow; later ones use 'midx'. */
+		byte eidx[MAX_DUNGEON_LEVEL];
+
+		/* The monster slots for each level. */
+		struct monster m[MAX_DUNGEON_LEVEL][MONSTERS_PER_LEVEL];
+	};
+
+
+	/* The global monster structure. */
+	extern struct monster_struct m;
+
+
+
+	/*
+	 * Global functions.
+	 */
+
+	public class Monster
+	{
+	public:
+		static _BOOL los(coord, coord);
+		static _BOOL is_monster_at(coord, coord);
+
+		static byte monster_tile(byte);
+		static byte monster_color(byte);
+
+		static struct monster *get_monster_at(coord, coord);
+
+		static void init_monsters(void);
+		static void initialize_monsters(void);
+		static void build_monster_map(void);
+		static void create_monster_in(byte);
+		static void create_population(void);
+		static void move_monsters(void);
+
+	private:
+		static byte random_monster_type(void);
+		static byte monster_level(byte midx);
+		static int16 monster_rarity(byte midx);
+		static byte max_monster(void);
+		static byte get_monster_index(void);
+		static int16 mhits(byte midx);
+		static void get_monster_coordinates(coord *x, coord *y);
+		
+		static int Monster::lmod[14];
+	};
+
+
+}
 #endif
-
-
-

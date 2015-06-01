@@ -36,6 +36,8 @@
 #include <stdio.h>
 #include "qhack.h"
 #include "MISC.H"
+#include "monster.h"
+#include "GAME.H"
 namespace QHack {
 	/*
 	 * Draw a title screen.
@@ -88,7 +90,7 @@ namespace QHack {
 		SysDep::stdprtstr(".");
 		init_player();
 		SysDep::stdprtstr(".");
-		init_monsters();
+		Monster::init_monsters();
 		SysDep::stdprtstr(".");
 		init_dungeon();
 		SysDep::stdprtstr(".");
@@ -96,7 +98,7 @@ namespace QHack {
 		InitScreen();
 
 		/* Play the game. */
-		play();
+		Game::play();
 
 		/* Clean up. */
 		SysDep::clean_up_io();

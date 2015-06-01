@@ -23,20 +23,26 @@
 
 #define __GAME__
 
-/*
- * Global includes.
- */
-
 #include "qhack.h"
+namespace QHack {
+	public class Game
+	{
+	public:
+		static void play(void);
+		static void modify_dungeon_level(byte);
+		static void redraw(void);
+	private:
+		static _BOOL walk_mode;
+		static _BOOL walk_in_room;
+		static int16 walk_steps;
 
+		static void update_screen(coord, coord);
+		static void attempt(byte);
+		static void descend_level(void);
+		static void ascend_level(void);
+		static void open_door(void);
+		static void activate_walk_mode(void);
 
-
-/*
- * Global functions.
- */
-
-void play(void);
-void modify_dungeon_level(byte);
-void redraw(void);
-
+	};
+}
 #endif

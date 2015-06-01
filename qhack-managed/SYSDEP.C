@@ -19,7 +19,7 @@
  * $3 (as of January, 1997).
  */
 
-#include "qhack.h"
+#include "SYSDEP.H"
 #include <conio.h>
 #using <mscorlib.dll>
 

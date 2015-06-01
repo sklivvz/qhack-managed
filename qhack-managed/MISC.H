@@ -23,9 +23,7 @@
 
 #define __MISC__
 
-/*
- * Global functions.
- */
+#include "CONFIG.H"
 
 namespace QHack {
 	public class Misc

@@ -29,8 +29,6 @@
 
 #include "config.h"
 #include "dungeon.h"
-#include "game.h"
-#include "monster.h"
 #include "player.h"
 
 namespace QHack {

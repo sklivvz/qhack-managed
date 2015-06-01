@@ -23,15 +23,6 @@
 #include <stdlib.h>
 #include "ERROR.H"
 namespace QHack {
-
-	Error::Error()
-	{
-	}
-
-	Error::~Error()
-	{
-	}
-
 	/*
 	* Die with an error message.
 	*/

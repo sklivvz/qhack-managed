@@ -32,11 +32,6 @@ namespace QHack {
 	{
 	public:
 		static void Die(char *message);
-
-	private:
-		Error();
-		~Error();
-
 	};
 }
 #endif

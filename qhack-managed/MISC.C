@@ -28,9 +28,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "qhack.h"
 #include "error.h"
 #include "MISC.H"
+#include "SYSDEP.H"
 namespace QHack {
 
 	/*

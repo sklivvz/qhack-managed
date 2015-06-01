@@ -22,6 +22,7 @@
 #include <stdio.h>
 
 #include "qhack.h"
+#include "MONSTER.H"
 
 
  /*
@@ -634,12 +635,12 @@ void print_tile_at_position(coord x, coord y)
 	}
 	else
 	{
-		if (is_monster_at(x, y) && los(x, y))
+		if (Monster::is_monster_at(x, y) && Monster::los(x, y))
 		{
-			struct monster *m = get_monster_at(x, y);
+			struct monster *m = Monster::get_monster_at(x, y);
 
-			SysDep::set_color(monster_color(m->midx));
-			SysDep::prtchar(monster_tile(m->midx));
+			SysDep::set_color(Monster::monster_color(m->midx));
+			SysDep::prtchar(Monster::monster_tile(m->midx));
 		}
 		else
 		{

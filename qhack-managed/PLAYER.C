@@ -27,6 +27,7 @@
 
 #include "qhack.h"
 #include "MISC.H"
+#include "GAME.H"
 using namespace QHack;
 
 /*
@@ -297,7 +298,7 @@ void adjust_training(void)
   while (c != 27 && c != 'Q' && c != 32);
 
   /* Clean up. */
-  redraw();
+  Game::redraw();
 }
 
 
