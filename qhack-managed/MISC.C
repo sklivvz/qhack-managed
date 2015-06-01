@@ -30,264 +30,267 @@
 
 #include "qhack.h"
 #include "error.h"
-using namespace QHack;
+#include "MISC.H"
+namespace QHack {
 
-/*
- * Local variables.
- */
+	/*
+	 * Local variables.
+	 */
 
-/* Is the message buffer currently used? */
-static _BOOL mbuffer_full = FALSE;
+	 /* Is the message buffer currently used? */
+	static _BOOL mbuffer_full = FALSE;
 
-/* What's the current x position in the message buffer? */
-static byte mbuffer_x = 0;
-
-
-
-/*
- * Local prototypes.
- */
-
-void more(void);
+	/* What's the current x position in the message buffer? */
+	static byte mbuffer_x = 0;
 
 
 
-/*
- * Functions.
- */
+	/*
+	 * Local prototypes.
+	 */
 
-/*
- * Display a message in the message line.
- *
- * The color will be reset to light gray and the message buffer will be
- * cleared if it was full.
- */
-
-void message(char *fmt, ...)
-{
-  va_list vl;
-  static char buffer[1000];
-
-  /* Evaluate the format string. */
-  va_start(vl, fmt);
-  vsprintf_s(buffer, sizeof(buffer), fmt, vl);
-  va_end(vl);
-
-  /* Clear the message buffer if necessary. */
-  if (mbuffer_full)
-    more();
-
-  /* Position the cursor. */
-  cursor(0, 0);
-
-  /* Reset the color. */
-  set_color(C_LIGHT_GRAY);
-
-  /* Display the message. */
-  prtstr("%s", buffer);
-
-  /* Update the screen. */
-  update();
-
-  /* Note the new message in the buffer. */
-  mbuffer_full = TRUE;
-  mbuffer_x = strlen(buffer) + 1;
-}
+	void more(void);
 
 
 
-/*
- * A simple convenience function for typical PC-related messages.
- */
+	/*
+	 * Functions.
+	 */
 
-void you(char *fmt, ...)
-{
-  va_list vl;
-  static char buffer[1000];
+	 /*
+	  * Display a message in the message line.
+	  *
+	  * The color will be reset to light gray and the message buffer will be
+	  * cleared if it was full.
+	  */
 
-  va_start(vl, fmt);
-  vsprintf_s(buffer, sizeof(buffer), fmt, vl);
-  va_end(vl);
-  
-  message("You %s", buffer);
-}
+	void Misc::message(char *fmt, ...)
+	{
+		va_list vl;
+		static char buffer[1000];
 
+		/* Evaluate the format string. */
+		va_start(vl, fmt);
+		vsprintf_s(buffer, sizeof(buffer), fmt, vl);
+		va_end(vl);
 
+		/* Clear the message buffer if necessary. */
+		if (mbuffer_full)
+			more();
 
-/*
- * Display a (more) prompt at the appropriate position in the message
- * buffer and aftwards clear the message buffer.
- */
+		/* Position the cursor. */
+		cursor(0, 0);
 
-void more(void)
-{
-  cursor(mbuffer_x, 0);
-  set_color(C_WHITE);
-  prtstr("(more)");
-  while (getkey() != ' ');
-  clear_messages();
-}
+		/* Reset the color. */
+		set_color(C_LIGHT_GRAY);
 
+		/* Display the message. */
+		prtstr("%s", buffer);
 
+		/* Update the screen. */
+		update();
 
-/*
- * Clear the message buffer.
- */
-
-void clear_messages(void)
-{
-  cursor(0, 0);
-  clear_to_eol();
-  mbuffer_full = FALSE;
-  mbuffer_x = 0;
-}
+		/* Note the new message in the buffer. */
+		mbuffer_full = TRUE;
+		mbuffer_x = strlen(buffer) + 1;
+	}
 
 
 
-/*
- * Get a target position starting from a base position at (xp, yp).
- */
+	/*
+	 * A simple convenience function for typical PC-related messages.
+	 */
 
-void get_target(coord xp, coord yp, coord *x, coord *y)
-{
-  char c;
+	void Misc::you(char *fmt, ...)
+	{
+		va_list vl;
+		static char buffer[1000];
 
-  *x = xp;
-  *y = yp;
-  
-  message("Which direction? ");
-  c = getkey();
-  clear_messages();
+		va_start(vl, fmt);
+		vsprintf_s(buffer, sizeof(buffer), fmt, vl);
+		va_end(vl);
 
-  switch (c)
-  {
-    case 'i':
-      (*y)--;
-      break;
-      
-    case 'j':
-      (*x)--;
-      break;
-      
-    case 'k':
-      (*y)++;
-      break;
-      
-    case 'l':
-      (*x)++;
-      break;
-
-    default:
-      (*x) = (*y) = -1;
-      break;
-  }
-}
+		message("You %s", buffer);
+	}
 
 
 
-/*
- * Extract a number from a string in dice notation.  Dice may have
- * up to 127 sides.
- */
+	/*
+	 * Display a (more) prompt at the appropriate position in the message
+	 * buffer and aftwards clear the message buffer.
+	 */
 
-int16 dice(char *dice)
-{
-  int16 roll = 0, sides = 0, i, amount = 0, bonus = 0, prefix = 0;
-  char *c;
-
-  c = dice;
-  while (*c && isdigit(*c))
-  {
-    amount *= 10;
-    amount += *c - '0';
-    c++;
-  }
-  if (!*c)
-    return amount;
-  if (*c != 'd')
-	  Error::Die("Illegal die format (1)");
-  c++;
-  while (*c && isdigit(*c))
-  {
-    sides *= 10;
-    sides += *c - '0';
-    c++;
-  }
-  if (*c)
-  {
-    if (*c == '-')
-      prefix = -1;
-    else if (*c == '+')
-      prefix = +1;
-    else
-		Error::Die("Illegal die roll format (2)");
-    c++;
-    while (*c && isdigit(*c))
-    {
-      bonus *= 10;
-      bonus += *c - '0';
-      c++;
-    }
-    if (*c)
-		Error::Die("Illegal die roll format (3)");
-  }
-  
-  for (i = 0; i < amount; i++)
-    roll += rand_byte(sides) + 1;
-
-  return (int16) (roll + (prefix * bonus));
-}
-  
-  
-
-/*
- * Return the absolute value of a variable.
- */
-
-uint32 iabs(int32 x)
-{
-  return (uint32) x;
-}
+	void more(void)
+	{
+		cursor(mbuffer_x, 0);
+		set_color(C_WHITE);
+		prtstr("(more)");
+		while (getkey() != ' ');
+		Misc::clear_messages();
+	}
 
 
 
-/*
- * Return the maximum of two given values.
- */
+	/*
+	 * Clear the message buffer.
+	 */
 
-uint32 imax(int32 a, int32 b)
-{
-  return ((a > b) ? a : b);
-}
-
-
-/*
- * Return the minimum of two given values.
- */
-
-uint32 imin(int32 a, int32 b)
-{
-  return ((a < b) ? a : b);
-}
+	void Misc::clear_messages(void)
+	{
+		cursor(0, 0);
+		clear_to_eol();
+		mbuffer_full = FALSE;
+		mbuffer_x = 0;
+	}
 
 
 
-/*
- * Construct a string from a given format string plus variables.
- *
- * NOTE: This function should not be called more than once in one run
- *       (e.g. in one 'printf' instruction) since the second call will
- *       overwrite the values determined by the first call.
- */
+	/*
+	 * Get a target position starting from a base position at (xp, yp).
+	 */
 
-char *string(char *fmt, ...)
-{
-  static char buffer[1000];
-  va_list vl;
+	void Misc::get_target(coord xp, coord yp, coord *x, coord *y)
+	{
+		char c;
 
-  va_start(vl, fmt);
-  vsprintf_s(buffer, sizeof(buffer), fmt, vl);
-  va_end(vl);
+		*x = xp;
+		*y = yp;
 
-  return buffer;
+		message("Which direction? ");
+		c = getkey();
+		clear_messages();
+
+		switch (c)
+		{
+		case 'i':
+			(*y)--;
+			break;
+
+		case 'j':
+			(*x)--;
+			break;
+
+		case 'k':
+			(*y)++;
+			break;
+
+		case 'l':
+			(*x)++;
+			break;
+
+		default:
+			(*x) = (*y) = -1;
+			break;
+		}
+	}
+
+
+
+	/*
+	 * Extract a number from a string in dice notation.  Dice may have
+	 * up to 127 sides.
+	 */
+
+	int16 Misc::dice(char *dice)
+	{
+		int16 roll = 0, sides = 0, i, amount = 0, bonus = 0, prefix = 0;
+		char *c;
+
+		c = dice;
+		while (*c && isdigit(*c))
+		{
+			amount *= 10;
+			amount += *c - '0';
+			c++;
+		}
+		if (!*c)
+			return amount;
+		if (*c != 'd')
+			Error::Die("Illegal die format (1)");
+		c++;
+		while (*c && isdigit(*c))
+		{
+			sides *= 10;
+			sides += *c - '0';
+			c++;
+		}
+		if (*c)
+		{
+			if (*c == '-')
+				prefix = -1;
+			else if (*c == '+')
+				prefix = +1;
+			else
+				Error::Die("Illegal die roll format (2)");
+			c++;
+			while (*c && isdigit(*c))
+			{
+				bonus *= 10;
+				bonus += *c - '0';
+				c++;
+			}
+			if (*c)
+				Error::Die("Illegal die roll format (3)");
+		}
+
+		for (i = 0; i < amount; i++)
+			roll += rand_byte(sides) + 1;
+
+		return (int16) (roll + (prefix * bonus));
+	}
+
+
+
+	/*
+	 * Return the absolute value of a variable.
+	 */
+
+	uint32 Misc::iabs(int32 x)
+	{
+		return (uint32) x;
+	}
+
+
+
+	/*
+	 * Return the maximum of two given values.
+	 */
+
+	uint32 Misc::imax(int32 a, int32 b)
+	{
+		return ((a > b) ? a : b);
+	}
+
+
+	/*
+	 * Return the minimum of two given values.
+	 */
+
+	uint32 Misc::imin(int32 a, int32 b)
+	{
+		return ((a < b) ? a : b);
+	}
+
+
+
+	/*
+	 * Construct a string from a given format string plus variables.
+	 *
+	 * NOTE: This function should not be called more than once in one run
+	 *       (e.g. in one 'printf' instruction) since the second call will
+	 *       overwrite the values determined by the first call.
+	 */
+
+	char *Misc::string(char *fmt, ...)
+	{
+		static char buffer[1000];
+		va_list vl;
+
+		va_start(vl, fmt);
+		vsprintf_s(buffer, sizeof(buffer), fmt, vl);
+		va_end(vl);
+
+		return buffer;
+	}
+
 }

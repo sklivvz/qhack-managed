@@ -26,7 +26,8 @@
 #include <string.h>
 
 #include "qhack.h"
-
+#include "MISC.H"
+using namespace QHack;
 
 /*
  * Global variables.
@@ -64,17 +65,17 @@ void init_player(void)
 
   /* Initial attributes. */
   for (i = 0; i < MAX_ATTRIBUTE; i++)
-    set_attribute(i, dice("6d3"));
+    set_attribute(i, Misc::dice("6d3"));
 
   /* Initial hitpoints. */
   d.pc.hits = d.pc.max_hits = (get_attribute(TOUGHNESS) +
 			       (get_attribute(STRENGTH) >> 1) +
-			       dice("1d6"));
+	  Misc::dice("1d6"));
 
   /* Initial magical power. */
   d.pc.power = d.pc.max_power = (get_attribute(MANA) +
 				 (get_attribute(INTELLIGENCE) >> 2) +
-				 dice("1d6"));
+	  Misc::dice("1d6"));
 
   /* Initial experience. */
   d.pc.experience = 0;
@@ -174,12 +175,12 @@ void adjust_training(void)
   remaining_units = TUNITS;
   for (i = 0; i < MAX_T_SKILL; i++)
   {
-    length = imax(length, strlen(tskill_s[i]));
-    exp_length = imax(exp_length
-		      , strlen(string("%d"
+    length = Misc::imax(length, strlen(tskill_s[i]));
+    exp_length = Misc::imax(exp_length
+		      , strlen(Misc::string("%d"
 				      , (int) d.pc.tskill_exp[i] / TUNITS)));
-    unit_length = imax(unit_length
-		       , strlen(string("%ld"
+    unit_length = Misc::imax(unit_length
+		       , strlen(Misc::string("%ld"
 				       , (long) required_exp(i) / TUNITS)));
     remaining_units -= d.pc.tskill_training[i];
   }
@@ -196,8 +197,8 @@ void adjust_training(void)
       
       training_length = 0;
       for (i = 0; i < MAX_T_SKILL; i++)
-	training_length = imax(training_length
-			       , strlen(string("%d"
+	training_length = Misc::imax(training_length
+			       , strlen(Misc::string("%d"
 					       , (int)
 					       d.pc.tskill_training[i])));
       for (i = 0; i < MAX_T_SKILL; i++)
@@ -447,7 +448,7 @@ void score_exp(int32 x)
     {
       d.pc.tskill_exp[i] -= required_exp(i);
       increase_training_skill(i);
-      message("Your %s increases to %d."
+	  Misc::message("Your %s increases to %d."
 	      , tskill_s[i], current_level(i));
     }
   }

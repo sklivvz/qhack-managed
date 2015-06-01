@@ -32,6 +32,7 @@
 
 #include "qhack.h"
 #include "error.h"
+#include "MISC.H"
 using namespace QHack;
 
 
@@ -178,7 +179,7 @@ void create_population(void)
 
 byte max_monster(void)
 {
-  return imin(MAX_MONSTER, ((d.dl << 1) + 4));
+  return Misc::imin(MAX_MONSTER, ((d.dl << 1) + 4));
 }
 
 
@@ -201,7 +202,7 @@ int16 monster_rarity(byte midx)
   int16 rarity = md[midx].rarity;
   byte level_diff = d.dl - monster_level(midx);
 
-  return imax(1, (rarity * lmod[imin(13, level_diff)]) / 100);
+  return Misc::imax(1, (rarity * lmod[Misc::imin(13, level_diff)]) / 100);
 }
 
 
@@ -307,7 +308,7 @@ void get_monster_coordinates(coord *x, coord *y)
 
 int16 mhits(byte midx)
 {
-  return dice(md[midx].hits);
+  return Misc::dice(md[midx].hits);
 }
 
 
@@ -332,7 +333,7 @@ _BOOL los(coord x, coord y)
   coord sx, sy, psx, psy;
 
   /* Adjacent to the PC? */
-  if (iabs(x - d.px) <= 1 && iabs(y - d.py) <= 1)
+  if (Misc::iabs(x - d.px) <= 1 && Misc::iabs(y - d.py) <= 1)
     return TRUE;
 
   /* Get the section for the given position. */

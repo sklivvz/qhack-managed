@@ -35,8 +35,8 @@
 
 #include <stdio.h>
 #include "qhack.h"
+#include "MISC.H"
 namespace QHack {
-
 	/*
 	 * Draw a title screen.
 	 */
@@ -45,7 +45,7 @@ namespace QHack {
 		char s[80];
 
 		clear_screen();
-		sprintf(s, string("-----====<<<<< QHack %d.%d >>>>>====-----", MAJOR_VERSION, MINOR_VERSION));
+		sprintf(s, Misc::string("-----====<<<<< QHack %d.%d >>>>>====-----", MAJOR_VERSION, MINOR_VERSION));
 		cursor(0, 3);
 		prtstr("%s", s);
 		cursor(16, 5);

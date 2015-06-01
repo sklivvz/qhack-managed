@@ -24,25 +24,27 @@
 #define __MISC__
 
 /*
- * Includes.
- */
-
-#include "qhack.h"
-
-
-/*
  * Global functions.
  */
 
-int16 dice(char *);
-uint32 iabs(int32);
-uint32 imax(int32, int32);
-uint32 imin(int32, int32);
-char *string(char *, ...);
+namespace QHack {
+	public class Misc
+	{
+	public:
+		static int16 dice(char *);
+		static uint32 iabs(int32);
+		static uint32 imax(int32, int32);
+		static uint32 imin(int32, int32);
+		static char *string(char *, ...);
 
-void you(char *, ...);
-void message(char *, ...);
-void clear_messages(void);
-void get_target(coord, coord, coord *, coord *);
+		static void you(char *, ...);
+		static void message(char *, ...);
+		static void clear_messages(void);
+		static void get_target(coord, coord, coord *, coord *);
+	private:
+
+	};
+}
+
 
 #endif
