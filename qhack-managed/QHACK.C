@@ -38,6 +38,9 @@
 #include "MISC.H"
 #include "monster.h"
 #include "GAME.H"
+#include "SYSDEP.H"
+#include "PLAYER.H"
+#include "DUNGEON.H"
 namespace QHack {
 	/*
 	 * Draw a title screen.
@@ -88,11 +91,11 @@ namespace QHack {
 		SysDep::stdprtstr(".");
 		SysDep::init_rand();
 		SysDep::stdprtstr(".");
-		init_player();
+		Player::init_player();
 		SysDep::stdprtstr(".");
 		Monster::init_monsters();
 		SysDep::stdprtstr(".");
-		init_dungeon();
+		Dungeon::init_dungeon();
 		SysDep::stdprtstr(".");
 		SysDep::init_io();
 		InitScreen();

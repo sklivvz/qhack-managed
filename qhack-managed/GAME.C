@@ -23,6 +23,8 @@
 #include "MISC.H"
 #include "MONSTER.H"
 #include "game.h"
+#include "DUNGEON.H"
+#include "PLAYER.H"
 namespace QHack {
 	/*
 	 * The main function.
@@ -42,18 +44,18 @@ namespace QHack {
 		 * XXXX: Once it is possible to save/restore the map this no longer
 		 *       must be done if the game was started by restoring a save file.
 		 */
-		d.dl = 0;
-		build_map();
+		Dungeon::d.dl = 0;
+		Dungeon::build_map();
 		Monster::create_population();
 		Monster::build_monster_map();
-		d.visited[0] = TRUE;
+		Dungeon::d.visited[0] = TRUE;
 
 		/* Initial player position. */
-		d.px = d.opx = d.stxu[0];
-		d.py = d.opy = d.styu[0];
+		Dungeon::d.px = Dungeon::d.opx = Dungeon::d.stxu[0];
+		Dungeon::d.py = Dungeon::d.opy = Dungeon::d.styu[0];
 
 		/* Initial panel position. */
-		d.psx = d.psy = 0;
+		Dungeon::d.psx = Dungeon::d.psy = 0;
 
 		/*
 		 * Standard stuff.
@@ -65,14 +67,14 @@ namespace QHack {
 		do
 		{
 			/* Print all the new things. */
-			update_screen(d.px, d.py);
-			update_player_status();
+			update_screen(Dungeon::d.px, Dungeon::d.py);
+			Player::update_player_status();
 
 			/* Display the player and center the cursor. */
-			map_cursor(d.px, d.py);
+			Dungeon::map_cursor(Dungeon::d.px, Dungeon::d.py);
 			SysDep::set_color(C_WHITE);
 			SysDep::prtchar('@');
-			map_cursor(d.px, d.py);
+			Dungeon::map_cursor(Dungeon::d.px, Dungeon::d.py);
 
 			/* Refresh the IO stuff. */
 			SysDep::update();
@@ -88,14 +90,14 @@ namespace QHack {
 			Misc::clear_messages();
 
 			/* Memorize the old PC position. */
-			opx = d.px;
-			opy = d.py;
+			opx = Dungeon::d.px;
+			opy = Dungeon::d.py;
 
 			/* Act depending on the last key received. */
 			switch (c)
 			{
 			case 'T':
-				adjust_training();
+				Player::adjust_training();
 				break;
 
 			case 'o':
@@ -109,7 +111,7 @@ namespace QHack {
 			case '<':
 				ascend_level();
 				/* Quit if necessary. */
-				if (d.dl == -1)
+				if (Dungeon::d.dl == -1)
 					c = 'Q';
 				break;
 
@@ -138,34 +140,34 @@ namespace QHack {
 				break;
 
 			case 'j':
-				if (is_open(d.px - 1, d.py))
-					d.px--;
+				if (Dungeon::is_open(Dungeon::d.px - 1, Dungeon::d.py))
+					Dungeon::d.px--;
 				break;
 
 			case 'l':
-				if (is_open(d.px + 1, d.py))
-					d.px++;
+				if (Dungeon::is_open(Dungeon::d.px + 1, Dungeon::d.py))
+					Dungeon::d.px++;
 				break;
 
 			case 'i':
-				if (is_open(d.px, d.py - 1))
-					d.py--;
+				if (Dungeon::is_open(Dungeon::d.px, Dungeon::d.py - 1))
+					Dungeon::d.py--;
 				break;
 
 			case 'k':
-				if (is_open(d.px, d.py + 1))
-					d.py++;
+				if (Dungeon::is_open(Dungeon::d.px, Dungeon::d.py + 1))
+					Dungeon::d.py++;
 				break;
 
 			default:
 				break;
 			}
 
-			d.opx = opx;
-			d.opy = opy;
+			Dungeon::d.opx = opx;
+			Dungeon::d.opy = opy;
 
 			/* Remove the player character from the screen. */
-			print_tile(opx, opy);
+			Dungeon::print_tile(opx, opy);
 		} while (c != 'Q');
 	}
 
@@ -180,37 +182,37 @@ namespace QHack {
 		coord sx, sy, px, py, opsx, opsy;
 
 		/* Find the current general section. */
-		get_current_section_coordinates(d.px, d.py, &sx, &sy);
+		Dungeon::get_current_section_coordinates(Dungeon::d.px, Dungeon::d.py, &sx, &sy);
 
 		/* Memorize the old panel view. */
-		opsx = d.psx;
-		opsy = d.psy;
+		opsx = Dungeon::d.psx;
+		opsy = Dungeon::d.psy;
 
 		/* Adjust the panel view. */
-		while (sx < d.psx)
-			d.psx--;
-		while (d.psx + 4 < sx)
-			d.psx++;
-		while (sy < d.psy)
-			d.psy--;
-		while (d.psy + 1 < sy)
-			d.psy++;
+		while (sx < Dungeon::d.psx)
+			Dungeon::d.psx--;
+		while (Dungeon::d.psx + 4 < sx)
+			Dungeon::d.psx++;
+		while (sy < Dungeon::d.psy)
+			Dungeon::d.psy--;
+		while (Dungeon::d.psy + 1 < sy)
+			Dungeon::d.psy++;
 
 		/* Repaint the whole screen map if necessary. */
-		if (opsx != d.psx || opsy != d.psy)
-			paint_map();
+		if (opsx != Dungeon::d.psx || opsy != Dungeon::d.psy)
+			Dungeon::paint_map();
 
 		/* Make the immediate surroundings known. */
 		for (px = x - 1; px <= x + 1; px++)
 			for (py = y - 1; py <= y + 1; py++)
-			know(px, py);
+			Dungeon::know(px, py);
 
 		/* Check whether the PC is in a room or not. */
-		get_current_section(d.px, d.py, &sx, &sy);
+		Dungeon::get_current_section(Dungeon::d.px, Dungeon::d.py, &sx, &sy);
 
 		/* Make rooms known. */
 		if (sx != -1 && sy != -1)
-			know_section(sx, sy);
+			Dungeon::know_section(sx, sy);
 	}
 
 
@@ -232,7 +234,7 @@ namespace QHack {
 		byte cn, cw, ce, cs;
 		static byte old_cn, old_cw, old_ce, old_cs;
 
-		get_current_section(d.px, d.py, &sx1, &sy1);
+		Dungeon::get_current_section(Dungeon::d.px, Dungeon::d.py, &sx1, &sy1);
 
 		/*
 		 * Check whether running should be stopped.
@@ -241,10 +243,10 @@ namespace QHack {
 		if (walk_steps || walk_in_room)
 		{
 			/* Count the possible ways. */
-			cn = (might_be_open(d.px, d.py - 1) && (d.py - 1 != d.opy)) ? 1 : 0;
-			cs = (might_be_open(d.px, d.py + 1) && (d.py + 1 != d.opy)) ? 1 : 0;
-			cw = (might_be_open(d.px - 1, d.py) && (d.px - 1 != d.opx)) ? 1 : 0;
-			ce = (might_be_open(d.px + 1, d.py) && (d.px + 1 != d.opx)) ? 1 : 0;
+			cn = (Dungeon::might_be_open(Dungeon::d.px, Dungeon::d.py - 1) && (Dungeon::d.py - 1 != Dungeon::d.opy)) ? 1 : 0;
+			cs = (Dungeon::might_be_open(Dungeon::d.px, Dungeon::d.py + 1) && (Dungeon::d.py + 1 != Dungeon::d.opy)) ? 1 : 0;
+			cw = (Dungeon::might_be_open(Dungeon::d.px - 1, Dungeon::d.py) && (Dungeon::d.px - 1 != Dungeon::d.opx)) ? 1 : 0;
+			ce = (Dungeon::might_be_open(Dungeon::d.px + 1, Dungeon::d.py) && (Dungeon::d.px + 1 != Dungeon::d.opx)) ? 1 : 0;
 
 			/* Check... */
 			if (walk_in_room)
@@ -275,7 +277,7 @@ namespace QHack {
 
 				/* Check for special features. */
 				if (walk_steps)
-					walk_mode &= (tile_at(d.px, d.py) == FLOOR);
+					walk_mode &= (Dungeon::tile_at(Dungeon::d.px, Dungeon::d.py) == FLOOR);
 			}
 			else
 				/* Check for intersections. */
@@ -309,45 +311,45 @@ namespace QHack {
 		switch (dir)
 		{
 		case N:
-			if (is_open(d.px, d.py - 1))
-				d.py--;
-			else if (is_open(d.px - 1, d.py) && d.px - 1 != d.opx)
-				d.px--;
-			else if (is_open(d.px + 1, d.py) && d.px + 1 != d.opx)
-				d.px++;
+			if (Dungeon::is_open(Dungeon::d.px, Dungeon::d.py - 1))
+				Dungeon::d.py--;
+			else if (Dungeon::is_open(Dungeon::d.px - 1, Dungeon::d.py) && Dungeon::d.px - 1 != Dungeon::d.opx)
+				Dungeon::d.px--;
+			else if (Dungeon::is_open(Dungeon::d.px + 1, Dungeon::d.py) && Dungeon::d.px + 1 != Dungeon::d.opx)
+				Dungeon::d.px++;
 			else
 				walk_mode = FALSE;
 			break;
 
 		case S:
-			if (is_open(d.px, d.py + 1))
-				d.py++;
-			else if (is_open(d.px - 1, d.py) && d.px - 1 != d.opx)
-				d.px--;
-			else if (is_open(d.px + 1, d.py) && d.px + 1 != d.opx)
-				d.px++;
+			if (Dungeon::is_open(Dungeon::d.px, Dungeon::d.py + 1))
+				Dungeon::d.py++;
+			else if (Dungeon::is_open(Dungeon::d.px - 1, Dungeon::d.py) && Dungeon::d.px - 1 != Dungeon::d.opx)
+				Dungeon::d.px--;
+			else if (Dungeon::is_open(Dungeon::d.px + 1, Dungeon::d.py) && Dungeon::d.px + 1 != Dungeon::d.opx)
+				Dungeon::d.px++;
 			else
 				walk_mode = FALSE;
 			break;
 
 		case E:
-			if (is_open(d.px + 1, d.py))
-				d.px++;
-			else if (is_open(d.px, d.py + 1) && d.py + 1 != d.opy)
-				d.py++;
-			else if (is_open(d.px, d.py - 1) && d.py - 1 != d.opy)
-				d.py--;
+			if (Dungeon::is_open(Dungeon::d.px + 1, Dungeon::d.py))
+				Dungeon::d.px++;
+			else if (Dungeon::is_open(Dungeon::d.px, Dungeon::d.py + 1) && Dungeon::d.py + 1 != Dungeon::d.opy)
+				Dungeon::d.py++;
+			else if (Dungeon::is_open(Dungeon::d.px, Dungeon::d.py - 1) && Dungeon::d.py - 1 != Dungeon::d.opy)
+				Dungeon::d.py--;
 			else
 				walk_mode = FALSE;
 			break;
 
 		case W:
-			if (is_open(d.px - 1, d.py))
-				d.px--;
-			else if (is_open(d.px, d.py + 1) && d.py + 1 != d.opy)
-				d.py++;
-			else if (is_open(d.px, d.py - 1) && d.py - 1 != d.opy)
-				d.py--;
+			if (Dungeon::is_open(Dungeon::d.px - 1, Dungeon::d.py))
+				Dungeon::d.px--;
+			else if (Dungeon::is_open(Dungeon::d.px, Dungeon::d.py + 1) && Dungeon::d.py + 1 != Dungeon::d.opy)
+				Dungeon::d.py++;
+			else if (Dungeon::is_open(Dungeon::d.px, Dungeon::d.py - 1) && Dungeon::d.py - 1 != Dungeon::d.opy)
+				Dungeon::d.py--;
 			else
 				walk_mode = FALSE;
 			break;
@@ -357,7 +359,7 @@ namespace QHack {
 		}
 
 		/* Find the new section. */
-		get_current_section(d.px, d.py, &sx2, &sy2);
+		Dungeon::get_current_section(Dungeon::d.px, Dungeon::d.py, &sx2, &sy2);
 
 		/* Entering/leaving a room will deactivate walk-mode. */
 		if (walk_steps)
@@ -377,9 +379,9 @@ namespace QHack {
 	void Game::redraw(void)
 	{
 		Misc::clear_messages();
-		paint_map();
-		update_necessary = TRUE;
-		update_player_status();
+		Dungeon::paint_map();
+		Player::update_necessary = TRUE;
+		Player::update_player_status();
 		SysDep::update();
 	}
 
@@ -392,10 +394,10 @@ namespace QHack {
 	void Game::modify_dungeon_level(byte mod)
 	{
 		/* Modify the actual dungeon level. */
-		d.dl += mod;
+		Dungeon::d.dl += mod;
 
 		/* Build the current dungeon map from the general description. */
-		build_map();
+		Dungeon::build_map();
 
 		/* Determine monster frequencies for the current dungeon level. */
 		Monster::initialize_monsters();
@@ -405,20 +407,20 @@ namespace QHack {
 		 * will be generated and the player receives a little bit of experience
 		 * for going where nobody went before (or at least managed to come back).
 		 */
-		if (!d.visited[d.dl])
+		if (!Dungeon::d.visited[Dungeon::d.dl])
 		{
 			Monster::create_population();
-			d.visited[d.dl] = TRUE;
+			Dungeon::d.visited[Dungeon::d.dl] = TRUE;
 
 			/* Score some experience for exploring unknown depths. */
-			score_exp(d.dl);
+			Player::score_exp(Dungeon::d.dl);
 		}
 
 		/* Place monsters in the appropriate positions. */
 		Monster::build_monster_map();
 
 		/* Paint the new map. */
-		paint_map();
+		Dungeon::paint_map();
 	}
 
 
@@ -428,13 +430,13 @@ namespace QHack {
 
 	void Game::descend_level(void)
 	{
-		if (tile_at(d.px, d.py) != STAIR_DOWN)
+		if (Dungeon::tile_at(Dungeon::d.px, Dungeon::d.py) != STAIR_DOWN)
 			Misc::you("don't see any stairs leading downwards.");
 		else
 		{
 			modify_dungeon_level(+1);
-			d.px = d.stxu[d.dl];
-			d.py = d.styu[d.dl];
+			Dungeon::d.px = Dungeon::d.stxu[Dungeon::d.dl];
+			Dungeon::d.py = Dungeon::d.styu[Dungeon::d.dl];
 		}
 	}
 
@@ -446,19 +448,19 @@ namespace QHack {
 
 	void Game::ascend_level(void)
 	{
-		if (tile_at(d.px, d.py) != STAIR_UP)
+		if (Dungeon::tile_at(Dungeon::d.px, Dungeon::d.py) != STAIR_UP)
 			Misc::you("don't see any stairs leading upwards.");
 		else
 		{
-			if (d.dl)
+			if (Dungeon::d.dl)
 			{
 				modify_dungeon_level(-1);
-				d.px = d.stxd[d.dl];
-				d.py = d.styd[d.dl];
+				Dungeon::d.px = Dungeon::d.stxd[Dungeon::d.dl];
+				Dungeon::d.py = Dungeon::d.styd[Dungeon::d.dl];
 			}
 			else
 				/* Leave the dungeon. */
-				d.dl = -1;
+				Dungeon::d.dl = -1;
 		}
 	}
 
@@ -473,14 +475,14 @@ namespace QHack {
 		coord tx, ty;
 
 		/* Find the door. */
-		Misc::get_target(d.px, d.py, &tx, &ty);
+		Misc::get_target(Dungeon::d.px, Dungeon::d.py, &tx, &ty);
 
 		/* Command aborted? */
 		if (tx == -1 || ty == -1)
 			return;
 
 		/* Check the door. */
-		switch (tile_at(tx, ty))
+		switch (Dungeon::tile_at(tx, ty))
 		{
 		case OPEN_DOOR:
 			Misc::message("This door is already open.");
@@ -488,7 +490,7 @@ namespace QHack {
 
 		case CLOSED_DOOR:
 			Misc::you("open the door.");
-			change_door(tx, ty, OPEN_DOOR);
+			Dungeon::change_door(tx, ty, OPEN_DOOR);
 			break;
 
 		case LOCKED_DOOR:
@@ -515,7 +517,7 @@ namespace QHack {
 		walk_mode = TRUE;
 
 		/* Check for a room. */
-		get_current_section(d.px, d.py, &x, &y);
+		Dungeon::get_current_section(Dungeon::d.px, Dungeon::d.py, &x, &y);
 		walk_in_room = (x != -1 && y != -1);
 	}
 }

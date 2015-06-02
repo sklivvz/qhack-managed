@@ -29,87 +29,104 @@
 
 #include "config.h"
 #include "SYSDEP.H"
-using namespace QHack;
+namespace QHack {
 
-/*
- * Some more constants.
- */
+	/*
+	 * Some more constants.
+	 */
 
-/* For the attributes used by QHack. */
-enum attributes
-{
-  STRENGTH, INTELLIGENCE, DEXTERITY, TOUGHNESS, MANA, MAX_ATTRIBUTE
-};
+	 /* For the attributes used by QHack. */
+	enum attributes
+	{
+		STRENGTH, INTELLIGENCE, DEXTERITY, TOUGHNESS, MANA, MAX_ATTRIBUTE
+	};
 
-/*
- * Constants for the training skills used by QHack.
- *
- * Note: The first five ones always should be the attribute training skills.
- *       Changing this could break several code parts in the game (especially
- *       in 'init_player').
- */
+	/*
+	 * Constants for the training skills used by QHack.
+	 *
+	 * Note: The first five ones always should be the attribute training skills.
+	 *       Changing this could break several code parts in the game (especially
+	 *       in 'init_player').
+	 */
 
-enum tskills
-{
-  T_STRENGTH, T_INTELLIGENCE, T_DEXTERITY, T_TOUGHNESS, T_MANA,
-  T_HITS, T_POWER, T_2HIT, T_2DAMAGE, T_SEARCHING, MAX_T_SKILL
-};
-
-
-
-/*
- * The global data structure for the player character.
- */
-
-struct player
-{
-  /* Name. */
-  char name[MAX_PC_NAME_LENGTH + 1];
-
-  /* Attribute scores and maximum attribute scores ever reached. */
-  byte attribute[MAX_ATTRIBUTE];
-  byte max_attribute[MAX_ATTRIBUTE];
-
-  /* Hitpoints (current and maximum). */
-  int16 hits, max_hits;
-  
-  /* Magical power. */
-  int16 power, max_power;
-
-  /* Experience scores. */
-  int32 experience;
-  int32 tskill_exp[MAX_T_SKILL];
-
-  /* Training adjustment. */
-  byte tskill_training[MAX_T_SKILL];
-  
-  /* Searching skill. */
-  byte searching;
-
-  /* Combat related stuff. */
-  int16 to_hit, to_damage;
-};
+	enum tskills
+	{
+		T_STRENGTH, T_INTELLIGENCE, T_DEXTERITY, T_TOUGHNESS, T_MANA,
+		T_HITS, T_POWER, T_2HIT, T_2DAMAGE, T_SEARCHING, MAX_T_SKILL
+	};
 
 
 
-/*
- * Global variables.
- */
+	/*
+	 * The global data structure for the player character.
+	 */
 
-extern _BOOL update_necessary;
+	struct player
+	{
+		/* Name. */
+		char name[MAX_PC_NAME_LENGTH + 1];
+
+		/* Attribute scores and maximum attribute scores ever reached. */
+		byte attribute[MAX_ATTRIBUTE];
+		byte max_attribute[MAX_ATTRIBUTE];
+
+		/* Hitpoints (current and maximum). */
+		int16 hits, max_hits;
+
+		/* Magical power. */
+		int16 power, max_power;
+
+		/* Experience scores. */
+		int32 experience;
+		int32 tskill_exp[MAX_T_SKILL];
+
+		/* Training adjustment. */
+		byte tskill_training[MAX_T_SKILL];
+
+		/* Searching skill. */
+		byte searching;
+
+		/* Combat related stuff. */
+		int16 to_hit, to_damage;
+	};
+
+	public class Player
+	{
+	public:
+
+
+		/*
+		 * Global variables.
+		 */
+
+		static _BOOL update_necessary;
 
 
 
-/*
- * Global functions.
- */
+		/*
+		 * Global functions.
+		 */
 
-byte get_attribute(byte);
+		static byte get_attribute(byte);
 
-void init_player(void);
-void update_player_status(void);
-void set_attribute(byte, byte);
-void adjust_training(void);
-void score_exp(int32);
+		static void init_player(void);
+		static void update_player_status(void);
+		static void set_attribute(byte, byte);
+		static void adjust_training(void);
+		static void score_exp(int32);
+	private:
 
+		static char *tskill_s[MAX_T_SKILL];
+
+
+		/*
+		* Local prototypes.
+		*/
+
+		static long required_exp(byte);
+		static int current_level(byte);
+		static void increase_training_skill(byte);
+
+	};
+}
 #endif

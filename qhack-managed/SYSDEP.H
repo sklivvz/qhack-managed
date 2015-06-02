@@ -29,8 +29,6 @@
 
 #include "config.h"
 
-
-
 namespace QHack {
 	/*
 	 * Global functions.

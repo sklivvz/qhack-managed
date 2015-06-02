@@ -23,21 +23,93 @@
 
 #define __DUNGEON__
 
-
-/*
- * Directions for the dungeon.
+ /*
+ * The complete dungeon structure
  */
 
-enum direction
-{
-  N, W, S, E, NW, SW, NE, SE, MAX_DIRECTION
-};
+#include "config.h"
+#include "PLAYER.H"
+
+namespace QHack {
+	/*
+	* One section of a level: each dungeon map consists of NSECT_W * NSECT_H
+	* sections (see config.g).  A section either contains one room with up
+	* to four doors or a tunnel intersection.
+	*
+	* NOTE: The use of a sectioning approach prevents things like digging, etc.
+	*/
+
+	public struct Section
+	{
+		/* Room available? */
+		_BOOL exists;
+
+		/* Room coordinates. */
+		coord rx1, rx2, ry1, ry2;
+
+		/* Door positions. */
+		coord dx[4], dy[4];
+
+		/* Door types. */
+		byte dt[4];
+	};
+
+	/*
+	* QHack uses one large structure for the complete dungeon.  There are
+	* no pointers or other fancy stuff involved since this game should be
+	* simple and easy to use.
+	*
+	* Naturally this prevents some useful things and is not the way a big
+	* roguelike game should be written (you sacrifice too much in flexibility),
+	* but since it's easy to use I headed into this direction.
+	*/
+
+	public struct DungeonComplex
+	{
+		/* The current level number. */
+		byte dl;
+
+		/* NSECT_W * NSECT_H sections for each level. */
+		struct QHack::Section s[MAX_DUNGEON_LEVEL][NSECT_W][NSECT_H];
+
+		/* Coordinates for stairways. */
+		coord stxu[MAX_DUNGEON_LEVEL];
+		coord styu[MAX_DUNGEON_LEVEL];
+		coord stxd[MAX_DUNGEON_LEVEL - 1];
+		coord styd[MAX_DUNGEON_LEVEL - 1];
+
+		/* Player coordinates. */
+		coord px, py;
+
+		/* Last player coordinates. */
+		coord opx, opy;
+
+		/* The knowledge map. */
+		byte known[MAX_DUNGEON_LEVEL][MAP_BIT_W][MAP_H];
+
+		/* The panel positions. */
+		coord psx, psy;
+
+		/* Level was already visited? */
+		_BOOL visited[MAX_DUNGEON_LEVEL];
+
+		/* The player data. */
+		struct player pc;
+	};
+	/*
+	 * Directions for the dungeon.
+	 */
+
+	enum direction
+	{
+		N, W, S, E, NW, SW, NE, SE, MAX_DIRECTION
+	};
 
 
 
-/*
- * Tiles for the dungeon.
- */
+	/*
+	 * Tiles for the dungeon.
+	 */
 
 #define NO_DOOR     -1
 #define OPEN_DOOR   '/'
@@ -48,45 +120,53 @@ enum direction
 #define STAIR_DOWN  '>'
 #define STAIR_UP    '<'
 
-/*
- * Global variables.
- */
+	public class Dungeon {
 
-/* The current dungeon level. */
-extern byte dl;
+	public:
+		static  byte dl;
+		static DungeonComplex d;
+
+		static int room_width(coord, coord);
+		static int room_height(coord, coord);
+
+		static _BOOL is_open(coord, coord);
+		static _BOOL might_be_open(coord, coord);
+		static _BOOL is_known(coord, coord);
+
+		static char tile_at(coord, coord);
+
+		static void init_dungeon(void);
+		static void build_map(void);
+		static void print_map(void);
+		static void know(coord, coord);
+		static void know_section(coord, coord);
+		static void get_current_section(coord, coord, coord *, coord *);
+		static void get_current_section_coordinates(coord, coord, coord *, coord *);
+		static void paint_map(void);
+		static void map_cursor(coord, coord);
+		static void print_tile(coord, coord);
+		static void print_tile_at_position(coord, coord);
+		static void change_door(coord, coord, byte);
+		static void set_knowledge(coord, coord, byte);
+	private:
+
+		static byte existence_chance;
+		static byte map[MAP_W][MAP_H];
+
+		static void create_complete_dungeon(void);
+		static void dig_level(void);
+		static void dig_section(coord, coord);
+		static void dig_stairs(void);
+		static void connect_sections(coord, coord, coord, coord, byte);
+		static void get_random_section(coord *, coord *);
+		static void set_color_for_tile(char);
+
+		static byte rand_door(void);
+		static _BOOL dir_possible(coord, coord, byte);
+
+	};
+}
 
 
-
-/*
- * Global functions.
- */
-
-int room_width(coord, coord);
-int room_height(coord, coord);
-
-_BOOL is_open(coord, coord);
-_BOOL might_be_open(coord, coord);
-_BOOL is_known(coord, coord);
-
-char tile_at(coord, coord);
-
-void init_dungeon(void);
-void build_map(void);
-void print_map(void);
-void know(coord, coord);
-void know_section(coord, coord);
-void get_current_section(coord, coord, coord *, coord *);
-void get_current_section_coordinates(coord, coord, coord *, coord *);
-void paint_map(void);
-void map_cursor(coord, coord);
-void print_tile(coord, coord);
-void print_tile_at_position(coord, coord);
-void change_door(coord, coord, byte);
-void set_knowledge(coord, coord, byte);
 
 #endif
-
-
-
-
-

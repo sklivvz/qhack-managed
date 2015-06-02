@@ -34,6 +34,7 @@
 #include "error.h"
 #include "MISC.H"
 #include "monster.h"
+#include "DUNGEON.H"
 namespace QHack {
 
 
@@ -122,8 +123,8 @@ namespace QHack {
 
 		/* Setup all monster indices. */
 		for (x = 0; x < MONSTERS_PER_LEVEL; x++)
-			if (m.m[d.dl][x].used)
-			midx[m.m[d.dl][x].x][m.m[d.dl][x].y] = x;
+			if (m.m[Dungeon::d.dl][x].used)
+			midx[m.m[Dungeon::d.dl][x].x][m.m[Dungeon::d.dl][x].y] = x;
 	}
 
 
@@ -165,7 +166,7 @@ namespace QHack {
 	 */
 	byte Monster::max_monster(void)
 	{
-		return Misc::imin(MAX_MONSTER, ((d.dl << 1) + 4));
+		return Misc::imin(MAX_MONSTER, ((Dungeon::d.dl << 1) + 4));
 	}
 
 
@@ -186,7 +187,7 @@ namespace QHack {
 	int16 Monster::monster_rarity(byte midx)
 	{
 		int16 rarity = md[midx].rarity;
-		byte level_diff = d.dl - monster_level(midx);
+		byte level_diff = Dungeon::d.dl - monster_level(midx);
 
 		return Misc::imax(1, (rarity * Monster::lmod[Misc::imin(13, level_diff)]) / 100);
 	}
@@ -253,15 +254,15 @@ namespace QHack {
 	void Monster::create_monster_in(byte midx)
 	{
 		/* Adjust the 'empty' index. */
-		if (m.eidx[d.dl] == midx)
-			m.eidx[d.dl] = m.m[d.dl][midx].midx;
+		if (m.eidx[Dungeon::d.dl] == midx)
+			m.eidx[Dungeon::d.dl] = m.m[Dungeon::d.dl][midx].midx;
 
 		/* Create the actual monster. */
-		m.m[d.dl][midx].used = TRUE;
-		m.m[d.dl][midx].midx = random_monster_type();
-		get_monster_coordinates(&m.m[d.dl][midx].x, &m.m[d.dl][midx].y);
-		m.m[d.dl][midx].hp = m.m[d.dl][midx].max_hp = mhits(m.m[d.dl][midx].midx);
-		m.m[d.dl][midx].state = ASLEEP;
+		m.m[Dungeon::d.dl][midx].used = TRUE;
+		m.m[Dungeon::d.dl][midx].midx = random_monster_type();
+		get_monster_coordinates(&m.m[Dungeon::d.dl][midx].x, &m.m[Dungeon::d.dl][midx].y);
+		m.m[Dungeon::d.dl][midx].hp = m.m[Dungeon::d.dl][midx].max_hp = mhits(m.m[Dungeon::d.dl][midx].midx);
+		m.m[Dungeon::d.dl][midx].state = ASLEEP;
 	}
 
 
@@ -280,7 +281,7 @@ namespace QHack {
 		{
 			*x = SysDep::rand_int(MAP_W);
 			*y = SysDep::rand_int(MAP_H);
-		} while (tile_at(*x, *y) != FLOOR ||
+		} while (Dungeon::tile_at(*x, *y) != FLOOR ||
 			Monster::los(*x, *y) ||
 			midx[*x][*y] != -1);
 	}
@@ -304,7 +305,7 @@ namespace QHack {
 
 	byte Monster::get_monster_index(void)
 	{
-		return m.eidx[d.dl];
+		return m.eidx[Dungeon::d.dl];
 	}
 
 
@@ -318,14 +319,14 @@ namespace QHack {
 		coord sx, sy, psx, psy;
 
 		/* Adjacent to the PC? */
-		if (Misc::iabs(x - d.px) <= 1 && Misc::iabs(y - d.py) <= 1)
+		if (Misc::iabs(x - Dungeon::d.px) <= 1 && Misc::iabs(y - Dungeon::d.py) <= 1)
 			return TRUE;
 
 		/* Get the section for the given position. */
-		get_current_section(x, y, &sx, &sy);
+		Dungeon::get_current_section(x, y, &sx, &sy);
 
 		/* Get the section for the player. */
-		get_current_section(d.px, d.py, &psx, &psy);
+		Dungeon::get_current_section(Dungeon::d.px, Dungeon::d.py, &psx, &psy);
 
 		/* In the same room section? */
 		return (sx == psx && sy == psy && sx != -1);
@@ -344,7 +345,7 @@ namespace QHack {
 			Error::Die("No monster to retrieve");
 
 		/* Return the requested monster. */
-		return &m.m[d.dl][midx[x][y]];
+		return &m.m[Dungeon::d.dl][midx[x][y]];
 	}
 
 
@@ -355,7 +356,7 @@ namespace QHack {
 
 	byte Monster::monster_color(byte midx)
 	{
-		return md[m.m[d.dl][midx].midx].color;
+		return md[m.m[Dungeon::d.dl][midx].midx].color;
 	}
 
 
@@ -366,7 +367,7 @@ namespace QHack {
 
 	byte Monster::monster_tile(byte midx)
 	{
-		return md[m.m[d.dl][midx].midx].symbol;
+		return md[m.m[Dungeon::d.dl][midx].midx].symbol;
 	}
 
 
