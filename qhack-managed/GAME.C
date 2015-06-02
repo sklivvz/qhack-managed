@@ -22,9 +22,11 @@
 
 #include "MISC.H"
 #include "MONSTER.H"
-#include "game.h"
 #include "DUNGEON.H"
 #include "PLAYER.H"
+#include "SYSDEP.H"
+#include "GAME.H"
+
 namespace QHack {
 	/*
 	 * The main function.

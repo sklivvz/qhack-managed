@@ -25,11 +25,11 @@
 
 #include <string.h>
 
-#include "qhack.h"
 #include "MISC.H"
 #include "GAME.H"
 #include "PLAYER.H"
 #include "DUNGEON.H"
+#include "SYSDEP.H"
 namespace QHack {
 
 	_BOOL Player::update_necessary = TRUE;

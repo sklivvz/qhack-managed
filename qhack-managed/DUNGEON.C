@@ -21,7 +21,6 @@
 
 #include <stdio.h>
 
-#include "qhack.h"
 #include "MONSTER.H"
 #include "DUNGEON.H"
 #include "SYSDEP.H"

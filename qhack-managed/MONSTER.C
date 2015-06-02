@@ -30,11 +30,11 @@
    * Includes.
    */
 
-#include "qhack.h"
 #include "error.h"
 #include "MISC.H"
 #include "monster.h"
 #include "DUNGEON.H"
+#include "SYSDEP.H"
 namespace QHack {
 
 

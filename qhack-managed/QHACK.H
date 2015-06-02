@@ -23,10 +23,6 @@
 
 #define __QHACK__
 
-/*
- * Includes.
- */
-
 namespace QHack {
 	public class Program
 	{

@@ -23,7 +23,7 @@
 
 #define __GAME__
 
-#include "qhack.h"
+#include "config.h"
 namespace QHack {
 	public class Game
 	{

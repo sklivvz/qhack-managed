@@ -28,7 +28,6 @@
  */
 
 #include "config.h"
-#include "SYSDEP.H"
 namespace QHack {
 
 	/*
