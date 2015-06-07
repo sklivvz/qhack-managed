@@ -23,32 +23,6 @@
 
 #define __CONFIG__
 
-/*
- * Section 0: Guess the target system.
- *
- * This section tries to do a little magic and attempts to guess your
- * operating system through checking a number of usually defined compiler
- * constants.
- *
- * The goal is to be able to compile the complete game without having to
- * change any part of the sources -- no matter what the target system is
- * (as long as it is supported naturally :-)
- *
- * If this doesn't work for you you need to define the required constant by
- * hand and will have to remove all the other constants.
- *
- * For DOS we support DJGPP (it sets the '__GO32__' flag).
- * For Linux we support the GCC (it sets the 'linux' flag).
- */
-
-#if defined(__GO32__)
-# define __TS_DOS__
-#elif defined(linux)
-# define __TS_LINUX__
-#else
-# define __WINDOWS__
-#endif
-
 
 /*
  * Section I: General constants for meta information.
@@ -153,10 +127,8 @@ using namespace System;
 
 typedef signed char    byte;
 typedef unsigned char  ubyte;
-typedef short          int16;
-typedef unsigned short uint16;
-typedef long           int32;
-typedef unsigned long  uint32;
+typedef unsigned short ushort;
+typedef unsigned int  uint;
 
 
 
@@ -165,11 +137,10 @@ typedef unsigned long  uint32;
 */
 
 typedef unsigned int   rand_type;
-typedef byte           _BOOL;
 
 /* Guess the size for coordinate variables. */
 #if (MAP_W > 127) || (MAP_H > 127)
-typedef int16          coord;
+typedef short          coord;
 #else
 typedef byte           coord;
 #endif
@@ -177,16 +148,6 @@ typedef byte           coord;
 /*
 * Special constants.
 */
-
-#ifndef TRUE
-# define TRUE  ((_BOOL) (1 > 0))
-#endif
-
-#ifndef FALSE
-# define FALSE ((_BOOL) (0 > 1))
-#endif
-
-
 
 #define	MAX_COLOR 16
 

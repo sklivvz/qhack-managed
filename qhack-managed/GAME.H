@@ -32,9 +32,9 @@ namespace QHack {
 		static void modify_dungeon_level(byte);
 		static void redraw(void);
 	private:
-		static _BOOL walk_mode;
-		static _BOOL walk_in_room;
-		static int16 walk_steps;
+		static bool walk_mode;
+		static bool walk_in_room;
+		static short walk_steps;
 
 		static void update_screen(coord, coord);
 		static void attempt(byte);

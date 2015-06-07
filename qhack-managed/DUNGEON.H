@@ -42,7 +42,7 @@ namespace QHack {
 	public struct Section
 	{
 		/* Room available? */
-		_BOOL exists;
+		bool exists;
 
 		/* Room coordinates. */
 		coord rx1, rx2, ry1, ry2;
@@ -91,7 +91,7 @@ namespace QHack {
 		coord psx, psy;
 
 		/* Level was already visited? */
-		_BOOL visited[MAX_DUNGEON_LEVEL];
+		bool visited[MAX_DUNGEON_LEVEL];
 
 		/* The player data. */
 		struct player pc;
@@ -129,9 +129,9 @@ namespace QHack {
 		static int room_width(coord, coord);
 		static int room_height(coord, coord);
 
-		static _BOOL is_open(coord, coord);
-		static _BOOL might_be_open(coord, coord);
-		static _BOOL is_known(coord, coord);
+		static bool is_open(coord, coord);
+		static bool might_be_open(coord, coord);
+		static bool is_known(coord, coord);
 
 		static char tile_at(coord, coord);
 
@@ -162,7 +162,7 @@ namespace QHack {
 		static void set_color_for_tile(char);
 
 		static byte rand_door(void);
-		static _BOOL dir_possible(coord, coord, byte);
+		static bool dir_possible(coord, coord, byte);
 
 	};
 }

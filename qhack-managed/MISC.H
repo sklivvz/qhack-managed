@@ -29,10 +29,10 @@ namespace QHack {
 	public class Misc
 	{
 	public:
-		static int16 dice(char *);
-		static uint32 iabs(int32);
-		static uint32 imax(int32, int32);
-		static uint32 imin(int32, int32);
+		static short dice(char *);
+		static uint iabs(int);
+		static uint imax(int, int);
+		static uint imin(int, int);
 		static char *string(char *, ...);
 
 		static void You(String^);

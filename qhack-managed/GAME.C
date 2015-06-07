@@ -31,9 +31,9 @@ namespace QHack {
 	/*
 	 * The main function.
 	 */
-	_BOOL Game::walk_mode;
-	_BOOL Game::walk_in_room;
-	int16 Game::walk_steps;
+	bool Game::walk_mode;
+	bool Game::walk_in_room;
+	short Game::walk_steps;
 
 	void Game::play(void)
 	{
@@ -50,7 +50,7 @@ namespace QHack {
 		Dungeon::build_map();
 		Monster::create_population();
 		Monster::build_monster_map();
-		Dungeon::d.visited[0] = TRUE;
+		Dungeon::d.visited[0] = true;
 
 		/* Initial player position. */
 		Dungeon::d.px = Dungeon::d.opx = Dungeon::d.stxu[0];
@@ -320,7 +320,7 @@ namespace QHack {
 			else if (Dungeon::is_open(Dungeon::d.px + 1, Dungeon::d.py) && Dungeon::d.px + 1 != Dungeon::d.opx)
 				Dungeon::d.px++;
 			else
-				walk_mode = FALSE;
+				walk_mode = false;
 			break;
 
 		case S:
@@ -331,7 +331,7 @@ namespace QHack {
 			else if (Dungeon::is_open(Dungeon::d.px + 1, Dungeon::d.py) && Dungeon::d.px + 1 != Dungeon::d.opx)
 				Dungeon::d.px++;
 			else
-				walk_mode = FALSE;
+				walk_mode = false;
 			break;
 
 		case E:
@@ -342,7 +342,7 @@ namespace QHack {
 			else if (Dungeon::is_open(Dungeon::d.px, Dungeon::d.py - 1) && Dungeon::d.py - 1 != Dungeon::d.opy)
 				Dungeon::d.py--;
 			else
-				walk_mode = FALSE;
+				walk_mode = false;
 			break;
 
 		case W:
@@ -353,7 +353,7 @@ namespace QHack {
 			else if (Dungeon::is_open(Dungeon::d.px, Dungeon::d.py - 1) && Dungeon::d.py - 1 != Dungeon::d.opy)
 				Dungeon::d.py--;
 			else
-				walk_mode = FALSE;
+				walk_mode = false;
 			break;
 
 		default:
@@ -382,7 +382,7 @@ namespace QHack {
 	{
 		Misc::clear_messages();
 		Dungeon::paint_map();
-		Player::update_necessary = TRUE;
+		Player::update_necessary = true;
 		Player::update_player_status();
 		SysDep::update();
 	}
@@ -412,7 +412,7 @@ namespace QHack {
 		if (!Dungeon::d.visited[Dungeon::d.dl])
 		{
 			Monster::create_population();
-			Dungeon::d.visited[Dungeon::d.dl] = TRUE;
+			Dungeon::d.visited[Dungeon::d.dl] = true;
 
 			/* Score some experience for exploring unknown depths. */
 			Player::score_exp(Dungeon::d.dl);
@@ -516,7 +516,7 @@ namespace QHack {
 		coord x, y;
 
 		/* Activate walking. */
-		walk_mode = TRUE;
+		walk_mode = true;
 
 		/* Check for a room. */
 		Dungeon::get_current_section(Dungeon::d.px, Dungeon::d.py, &x, &y);

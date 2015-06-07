@@ -37,8 +37,8 @@ namespace QHack {
 	{
 	public:
 		static byte rand_byte(byte);
-		static uint16 rand_int(uint16);
-		static uint32 rand_long(uint32);
+		static ushort rand_int(ushort);
+		static uint rand_long(uint);
 
 		static char getkey(void);
 

@@ -32,7 +32,7 @@
 #include "SYSDEP.H"
 namespace QHack {
 
-	_BOOL Player::update_necessary = TRUE;
+	bool Player::update_necessary = true;
 
 	char *Player::tskill_s[MAX_T_SKILL] =
 	{
@@ -131,7 +131,7 @@ namespace QHack {
 				, (long) Dungeon::d.pc.experience);
 			SysDep::clear_to_eol();
 
-			update_necessary = FALSE;
+			update_necessary = false;
 		}
 	}
 
@@ -146,8 +146,8 @@ namespace QHack {
 	{
 		char c;
 		byte i, length, exp_length, unit_length, training_length;
-		int16 remaining_units;
-		_BOOL do_redraw;
+		short remaining_units;
+		bool do_redraw;
 		static byte pos = 0;  /* Initial menu position. */
 
 		/*
@@ -172,7 +172,7 @@ namespace QHack {
 		}
 
 		/* Main loop.  Draw the menu and react on commands. */
-		do_redraw = TRUE;
+		do_redraw = true;
 
 		do
 		{
@@ -205,7 +205,7 @@ namespace QHack {
 				SysDep::prtstr(" [iI] Up -- [kK] Down -- [jJ] Decrease -- [lL] Increase");
 				SysDep::prtstr(" -- Units: %d", (int) remaining_units);
 				SysDep::clear_to_eol();
-				do_redraw = FALSE;
+				do_redraw = false;
 			}
 
 			SysDep::cursor(4, pos);
@@ -223,7 +223,7 @@ namespace QHack {
 				{
 					Dungeon::d.pc.tskill_training[pos] += remaining_units;
 					remaining_units = 0;
-					do_redraw = TRUE;
+					do_redraw = true;
 				}
 				break;
 
@@ -232,7 +232,7 @@ namespace QHack {
 				{
 					remaining_units--;
 					Dungeon::d.pc.tskill_training[pos]++;
-					do_redraw = TRUE;
+					do_redraw = true;
 				}
 				break;
 
@@ -241,7 +241,7 @@ namespace QHack {
 				{
 					remaining_units += Dungeon::d.pc.tskill_training[pos];
 					Dungeon::d.pc.tskill_training[pos] = 0;
-					do_redraw = TRUE;
+					do_redraw = true;
 				}
 				break;
 
@@ -250,7 +250,7 @@ namespace QHack {
 				{
 					Dungeon::d.pc.tskill_training[pos]--;
 					remaining_units++;
-					do_redraw = TRUE;
+					do_redraw = true;
 				}
 				break;
 
@@ -407,7 +407,7 @@ namespace QHack {
 			Dungeon::d.pc.searching++;
 			break;
 		}
-		update_necessary = TRUE;
+		update_necessary = true;
 	}
 
 
@@ -416,7 +416,7 @@ namespace QHack {
 	 * Score a specified number of experience points.
 	 */
 
-	void Player::score_exp(int32 x)
+	void Player::score_exp(int x)
 	{
 		byte i;
 
@@ -438,6 +438,6 @@ namespace QHack {
 		}
 
 		/* Update the changes. */
-		update_necessary = TRUE;
+		update_necessary = true;
 	}
 }

@@ -70,7 +70,7 @@ namespace QHack {
 	static byte midx[MAP_W][MAP_H];
 
 	/* The total rarity for monsters; dependent on the current level. */
-	static uint32 total_rarity;
+	static uint total_rarity;
 
 
 	/*
@@ -91,13 +91,13 @@ namespace QHack {
 			/* Initially all slots are empty. */
 			for (j = 0; j < MONSTERS_PER_LEVEL - 1; j++)
 			{
-				m.m[i][j].used = FALSE;
+				m.m[i][j].used = false;
 				m.m[i][j].midx = j + 1;
 			}
 
 			/* The last one points to 'no more slots'. */
 			m.m[i][MONSTERS_PER_LEVEL - 1].midx = -1;
-			m.m[i][MONSTERS_PER_LEVEL - 1].used = FALSE;
+			m.m[i][MONSTERS_PER_LEVEL - 1].used = false;
 		}
 
 		/* Initialize the monster index map as 'empty'. */
@@ -184,9 +184,9 @@ namespace QHack {
 	  100, 90, 80, 72, 64, 56, 50, 42, 35, 28, 20, 12, 4, 1
 	};
 
-	int16 Monster::monster_rarity(byte midx)
+	short Monster::monster_rarity(byte midx)
 	{
-		int16 rarity = md[midx].rarity;
+		short rarity = md[midx].rarity;
 		byte level_diff = Dungeon::d.dl - monster_level(midx);
 
 		return Misc::imax(1, (rarity * Monster::lmod[Misc::imin(13, level_diff)]) / 100);
@@ -230,7 +230,7 @@ namespace QHack {
 
 	byte Monster::random_monster_type(void)
 	{
-		int32 roll;
+		int roll;
 		byte i;
 
 		roll = SysDep::rand_long(total_rarity) + 1;
@@ -258,7 +258,7 @@ namespace QHack {
 			m.eidx[Dungeon::d.dl] = m.m[Dungeon::d.dl][midx].midx;
 
 		/* Create the actual monster. */
-		m.m[Dungeon::d.dl][midx].used = TRUE;
+		m.m[Dungeon::d.dl][midx].used = true;
 		m.m[Dungeon::d.dl][midx].midx = random_monster_type();
 		get_monster_coordinates(&m.m[Dungeon::d.dl][midx].x, &m.m[Dungeon::d.dl][midx].y);
 		m.m[Dungeon::d.dl][midx].hp = m.m[Dungeon::d.dl][midx].max_hp = mhits(m.m[Dungeon::d.dl][midx].midx);
@@ -292,7 +292,7 @@ namespace QHack {
 	 * Return an initial hitpoint number for a monster of a given type.
 	 */
 
-	int16 Monster::mhits(byte midx)
+	short Monster::mhits(byte midx)
 	{
 		return Misc::dice(md[midx].hits);
 	}
@@ -314,13 +314,13 @@ namespace QHack {
 	 * Check whether a PC is able to see a position.
 	 */
 
-	_BOOL Monster::los(coord x, coord y)
+	bool Monster::los(coord x, coord y)
 	{
 		coord sx, sy, psx, psy;
 
 		/* Adjacent to the PC? */
 		if (Misc::iabs(x - Dungeon::d.px) <= 1 && Misc::iabs(y - Dungeon::d.py) <= 1)
-			return TRUE;
+			return true;
 
 		/* Get the section for the given position. */
 		Dungeon::get_current_section(x, y, &sx, &sy);
@@ -376,7 +376,7 @@ namespace QHack {
 	 * Determine whether a monster holds a given position.
 	 */
 
-	_BOOL Monster::is_monster_at(coord x, coord y)
+	bool Monster::is_monster_at(coord x, coord y)
 	{
 		return (midx[x][y] != -1);
 	}

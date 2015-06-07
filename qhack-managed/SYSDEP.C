@@ -56,9 +56,9 @@ namespace QHack {
 	 * Return a random 16-bit number.
 	 */
 
-	uint16 SysDep::rand_int(uint16 max)
+	ushort SysDep::rand_int(ushort max)
 	{
-		return (uint16) (rand() % max);
+		return (ushort) (rand() % max);
 	}
 
 
@@ -66,9 +66,9 @@ namespace QHack {
 	 * Return a random 32-bit number.
 	 */
 
-	uint32 SysDep::rand_long(uint32 max)
+	uint SysDep::rand_long(uint max)
 	{
-		return (uint32) (rand() % max);
+		return (uint) (rand() % max);
 	}
 
 

@@ -70,14 +70,14 @@ namespace QHack {
 		byte max_attribute[MAX_ATTRIBUTE];
 
 		/* Hitpoints (current and maximum). */
-		int16 hits, max_hits;
+		short hits, max_hits;
 
 		/* Magical power. */
-		int16 power, max_power;
+		short power, max_power;
 
 		/* Experience scores. */
-		int32 experience;
-		int32 tskill_exp[MAX_T_SKILL];
+		int experience;
+		int tskill_exp[MAX_T_SKILL];
 
 		/* Training adjustment. */
 		byte tskill_training[MAX_T_SKILL];
@@ -86,7 +86,7 @@ namespace QHack {
 		byte searching;
 
 		/* Combat related stuff. */
-		int16 to_hit, to_damage;
+		short to_hit, to_damage;
 	};
 
 	public class Player
@@ -98,7 +98,7 @@ namespace QHack {
 		 * Global variables.
 		 */
 
-		static _BOOL update_necessary;
+		static bool update_necessary;
 
 
 
@@ -112,7 +112,7 @@ namespace QHack {
 		static void update_player_status(void);
 		static void set_attribute(byte, byte);
 		static void adjust_training(void);
-		static void score_exp(int32);
+		static void score_exp(int);
 	private:
 
 		static char *tskill_s[MAX_T_SKILL];

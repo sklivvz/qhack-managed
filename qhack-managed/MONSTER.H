@@ -54,7 +54,7 @@ namespace QHack {
 	struct monster
 	{
 		/* Is the entry occupied by a monster? */
-		_BOOL used;
+		bool used;
 
 		/* Monster type. */
 		byte midx;
@@ -63,7 +63,7 @@ namespace QHack {
 		coord x, y;
 
 		/* Hitpoint data. */
-		int16 hp, max_hp;
+		short hp, max_hp;
 
 		/* The current state (see above). */
 		byte state;
@@ -102,7 +102,7 @@ namespace QHack {
 		char *damage;
 
 		/* Frequency for the basic level. */
-		int16 rarity;
+		short rarity;
 	};
 
 
@@ -128,8 +128,8 @@ namespace QHack {
 	public class Monster
 	{
 	public:
-		static _BOOL los(coord, coord);
-		static _BOOL is_monster_at(coord, coord);
+		static bool los(coord, coord);
+		static bool is_monster_at(coord, coord);
 
 		static byte monster_tile(byte);
 		static ConsoleColor monster_color(byte);
@@ -146,10 +146,10 @@ namespace QHack {
 	private:
 		static byte random_monster_type(void);
 		static byte monster_level(byte midx);
-		static int16 monster_rarity(byte midx);
+		static short monster_rarity(byte midx);
 		static byte max_monster(void);
 		static byte get_monster_index(void);
-		static int16 mhits(byte midx);
+		static short mhits(byte midx);
 		static void get_monster_coordinates(coord *x, coord *y);
 		
 		static int Monster::lmod[14];

@@ -65,7 +65,7 @@ namespace QHack {
 			dig_level();
 
 			/* Note the current level as unvisited. */
-			d.visited[d.dl] = FALSE;
+			d.visited[d.dl] = false;
 		}
 	}
 
@@ -78,7 +78,7 @@ namespace QHack {
 	void Dungeon::dig_level(void)
 	{
 		coord w, h, sectx[SECT_NUMBER], secty[SECT_NUMBER];
-		int16 i, index[SECT_NUMBER];
+		short i, index[SECT_NUMBER];
 
 		/*
 		 * Determine a random order for the section generation.
@@ -98,7 +98,7 @@ namespace QHack {
 		/* Randomly shuffle the initial order. */
 		for (i = 0; i < SECT_NUMBER; i++)
 		{
-			int16 j, k, dummy;
+			short j, k, dummy;
 
 			j = SysDep::rand_int(SECT_NUMBER);
 			k = SysDep::rand_int(SECT_NUMBER);
@@ -139,7 +139,7 @@ namespace QHack {
 		if (SysDep::rand_byte(100) + 1 >= existence_chance)
 		{
 			/* No room here. */
-			d.s[d.dl][x][y].exists = FALSE;
+			d.s[d.dl][x][y].exists = false;
 
 			/* Decrease the chance for further empty rooms. */
 			existence_chance += 3;
@@ -149,7 +149,7 @@ namespace QHack {
 			byte dir;
 
 			/* Yeah :-) ! */
-			d.s[d.dl][x][y].exists = TRUE;
+			d.s[d.dl][x][y].exists = true;
 
 			/*
 			 * Dig a room.
@@ -459,7 +459,7 @@ namespace QHack {
 	 * Determine whether a given section is set on a border.
 	 */
 
-	_BOOL Dungeon::dir_possible(coord x, coord y, byte dir)
+	bool Dungeon::dir_possible(coord x, coord y, byte dir)
 	{
 		return ((dir == N && y > 0) ||
 			(dir == S && y < NSECT_H - 1) ||
@@ -527,17 +527,17 @@ namespace QHack {
 	 * Check whether a given position is accessible.
 	 */
 
-	_BOOL Dungeon::is_open(coord x, coord y)
+	bool Dungeon::is_open(coord x, coord y)
 	{
 		switch (map[x][y])
 		{
 		case ROCK:
 		case LOCKED_DOOR:
 		case CLOSED_DOOR:
-			return FALSE;
+			return false;
 
 		default:
-			return TRUE;
+			return true;
 		}
 	}
 
@@ -547,15 +547,15 @@ namespace QHack {
 	 * Check whether a given position might be accessible.
 	 */
 
-	_BOOL Dungeon::might_be_open(coord x, coord y)
+	bool Dungeon::might_be_open(coord x, coord y)
 	{
 		switch (map[x][y])
 		{
 		case ROCK:
-			return FALSE;
+			return false;
 
 		default:
-			return TRUE;
+			return true;
 		}
 	}
 
@@ -751,14 +751,14 @@ namespace QHack {
 
 	void Dungeon::map_cursor(coord x, coord y)
 	{
-		_BOOL change = FALSE, any_change = FALSE;
+		bool change = false, any_change = false;
 		coord xp, yp;
 
 		do
 		{
 			/* Any display change necessary? */
 			any_change |= change;
-			change = FALSE;
+			change = false;
 
 			/* Determine the screen coordinates for the map coordinates. */
 			xp = x - d.psx * SECT_W;
@@ -768,25 +768,25 @@ namespace QHack {
 			if (yp < 1)
 			{
 				d.psy--;
-				change = TRUE;
+				change = true;
 			}
 			/* Check scrolling to the left. */
 			else if (yp >= VMAP_H)
 			{
 				d.psy++;
-				change = TRUE;
+				change = true;
 			}
 			/* Check scrolling downwards. */
 			if (xp < 1)
 			{
 				d.psx--;
-				change = TRUE;
+				change = true;
 			}
 			/* Check scrolling upwards. */
 			else if (xp >= VMAP_W)
 			{
 				d.psx++;
-				change = TRUE;
+				change = true;
 			}
 		} while (change);
 
@@ -829,9 +829,9 @@ namespace QHack {
 	 * NOTE: The knowledge map is saved in a bit field to save some memory.
 	 */
 
-	_BOOL Dungeon::is_known(coord x, coord y)
+	bool Dungeon::is_known(coord x, coord y)
 	{
-		return (_BOOL) (d.known[d.dl][x >> 3][y] & (1 << (x % 8)));
+		return (bool) (d.known[d.dl][x >> 3][y] & (1 << (x % 8)));
 	}
 
 

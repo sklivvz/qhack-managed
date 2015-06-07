@@ -38,7 +38,7 @@ namespace QHack {
 	 */
 
 	 /* Is the message buffer currently used? */
-	static _BOOL mbuffer_full = FALSE;
+	static bool mbuffer_full = false;
 
 	/* What's the current x position in the message buffer? */
 	static byte mbuffer_x = 0;
@@ -83,7 +83,7 @@ namespace QHack {
 		SysDep::update();
 
 		/* Note the new message in the buffer. */
-		mbuffer_full = TRUE;
+		mbuffer_full = true;
 		mbuffer_x = fmt->Length + 1;
 
 	}
@@ -142,7 +142,7 @@ namespace QHack {
 	{
 		SysDep::cursor(0, 0);
 		SysDep::clear_to_eol();
-		mbuffer_full = FALSE;
+		mbuffer_full = false;
 		mbuffer_x = 0;
 	}
 
@@ -194,9 +194,9 @@ namespace QHack {
 	 * up to 127 sides.
 	 */
 
-	int16 Misc::dice(char *dice)
+	short Misc::dice(char *dice)
 	{
-		int16 roll = 0, sides = 0, i, amount = 0, bonus = 0, prefix = 0;
+		short roll = 0, sides = 0, i, amount = 0, bonus = 0, prefix = 0;
 		char *c;
 
 		c = dice;
@@ -239,7 +239,7 @@ namespace QHack {
 		for (i = 0; i < amount; i++)
 			roll += SysDep::rand_byte(sides) + 1;
 
-		return (int16) (roll + (prefix * bonus));
+		return (short) (roll + (prefix * bonus));
 	}
 
 
@@ -248,9 +248,9 @@ namespace QHack {
 	 * Return the absolute value of a variable.
 	 */
 
-	uint32 Misc::iabs(int32 x)
+	uint Misc::iabs(int x)
 	{
-		return (uint32) x;
+		return (uint) x;
 	}
 
 
@@ -259,7 +259,7 @@ namespace QHack {
 	 * Return the maximum of two given values.
 	 */
 
-	uint32 Misc::imax(int32 a, int32 b)
+	uint Misc::imax(int a, int b)
 	{
 		return ((a > b) ? a : b);
 	}
@@ -269,7 +269,7 @@ namespace QHack {
 	 * Return the minimum of two given values.
 	 */
 
-	uint32 Misc::imin(int32 a, int32 b)
+	uint Misc::imin(int a, int b)
 	{
 		return ((a < b) ? a : b);
 	}
