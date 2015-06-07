@@ -35,10 +35,14 @@ namespace QHack {
 		static uint32 imin(int32, int32);
 		static char *string(char *, ...);
 
-		static void you(char *, ...);
-		static void message(char *, ...);
+		static void You(String^);
+		static void Message(String^);
 		static void clear_messages(void);
 		static void get_target(coord, coord, coord *, coord *);
+		static String^ Format(char *, Object^);
+		static String^ Format(char *, Object^, Object^);
+		static String^ Format(char *, Object^, Object^, Object^);
+		static String^ Format(char *, Object^, Object^, Object^, Object^);
 	private:
 
 	};

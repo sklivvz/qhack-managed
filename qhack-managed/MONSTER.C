@@ -60,10 +60,10 @@ namespace QHack {
 	 /* The complete monster list for the game. */
 	struct monster_def md[MAX_MONSTER] =
 	{
-	  {'k', C_LIGHT_GREEN, "kobold", 14, "1d4", 1, 0, "1d6", COMMON},
-	  {'r', C_BROWN, "rat", 12, "1d3", 1, 0, "1d3", COMMON},
-	  {'g', C_LIGHT_BLUE, "goblin", 13, "1d8", 1, 0, "1d6", COMMON},
-	  {'x', C_YELLOW, "lightning bug", 18, "2d3", 1, +1, "1d4", RARE}
+	  {'k', ConsoleColor::Green, "kobold", 14, "1d4", 1, 0, "1d6", COMMON},
+	  {'r', ConsoleColor::DarkYellow, "rat", 12, "1d3", 1, 0, "1d3", COMMON},
+	  {'g', ConsoleColor::Blue, "goblin", 13, "1d8", 1, 0, "1d6", COMMON},
+	  {'x', ConsoleColor::Yellow, "lightning bug", 18, "2d3", 1, +1, "1d4", RARE}
 	};
 
 	/* The dynamic index map for one monster level. */
@@ -354,7 +354,7 @@ namespace QHack {
 	 * Return the color for an indexed monster.
 	 */
 
-	byte Monster::monster_color(byte midx)
+	ConsoleColor Monster::monster_color(byte midx)
 	{
 		return md[m.m[Dungeon::d.dl][midx].midx].color;
 	}

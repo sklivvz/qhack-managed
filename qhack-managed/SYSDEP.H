@@ -49,10 +49,10 @@ namespace QHack {
 		static void cursor(byte, byte);
 		static void prtchar(byte);
 		static void prtstr(char *, ...);
-		static void stdprtstr(char *, ...);
+		static void stdprtstr(char *);
 		static void update(void);
 		static void clear_to_eol(void);
-		static void set_color(byte);
+		static void set_color(ConsoleColor);
 
 	private:
 

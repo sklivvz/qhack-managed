@@ -116,7 +116,7 @@ namespace QHack {
 		if (update_necessary)
 		{
 			SysDep::cursor(0, 24);
-			SysDep::set_color(C_LIGHT_GRAY);
+			SysDep::set_color(ConsoleColor::Gray);
 			SysDep::prtstr("%s   St:%d  In:%d  Dx:%d  To:%d  Ma:%d  H:%d(%d)  P:%d(%d)  X:%ld"
 				, Dungeon::d.pc.name
 				, (int) Dungeon::d.pc.attribute[STRENGTH]
@@ -179,7 +179,7 @@ namespace QHack {
 			/* Draw the menu. */
 			if (do_redraw)
 			{
-				SysDep::set_color(C_LIGHT_GRAY);
+				SysDep::set_color(ConsoleColor::Gray);
 
 				training_length = 0;
 				for (i = 0; i < MAX_T_SKILL; i++)
@@ -433,8 +433,7 @@ namespace QHack {
 			{
 				Dungeon::d.pc.tskill_exp[i] -= required_exp(i);
 				increase_training_skill(i);
-				Misc::message("Your %s increases to %Dungeon::d."
-					, tskill_s[i], current_level(i));
+				Misc::Message(Misc::Format("Your %s increases to %d.", gcnew String(tskill_s[i]), current_level(i)));
 			}
 		}
 

@@ -64,16 +64,8 @@ namespace QHack {
 	  * cleared if it was full.
 	  */
 
-	void Misc::message(char *fmt, ...)
+	void Misc::Message(String^ fmt)
 	{
-		va_list vl;
-		static char buffer[1000];
-
-		/* Evaluate the format string. */
-		va_start(vl, fmt);
-		vsprintf_s(buffer, sizeof(buffer), fmt, vl);
-		va_end(vl);
-
 		/* Clear the message buffer if necessary. */
 		if (mbuffer_full)
 			more();
@@ -82,17 +74,35 @@ namespace QHack {
 		SysDep::cursor(0, 0);
 
 		/* Reset the color. */
-		SysDep::set_color(C_LIGHT_GRAY);
+		SysDep::set_color(ConsoleColor::Gray);
 
 		/* Display the message. */
-		SysDep::prtstr("%s", buffer);
+		SysDep::prtstr("%s", fmt);
 
 		/* Update the screen. */
 		SysDep::update();
 
 		/* Note the new message in the buffer. */
 		mbuffer_full = TRUE;
-		mbuffer_x = strlen(buffer) + 1;
+		mbuffer_x = fmt->Length + 1;
+
+	}
+
+	String^ Misc::Format(char *fmt, Object^ param1)
+	{
+		return String::Format(gcnew String(fmt), param1);
+	}
+	String^ Misc::Format(char *fmt, Object^ param1, Object^ param2)
+	{
+		return String::Format(gcnew String(fmt), param1, param2);
+	}
+	String^ Misc::Format(char *fmt, Object^ param1, Object^ param2, Object^ param3)
+	{
+		return String::Format(gcnew String(fmt), param1, param2, param3);
+	}
+	String^ Misc::Format(char *fmt, Object^ param1, Object^ param2, Object^ param3, Object^ param4)
+	{
+		return String::Format(gcnew String(fmt), param1, param2, param3, param4);
 	}
 
 
@@ -101,16 +111,9 @@ namespace QHack {
 	 * A simple convenience function for typical PC-related messages.
 	 */
 
-	void Misc::you(char *fmt, ...)
+	void Misc::You(String^ fmt)
 	{
-		va_list vl;
-		static char buffer[1000];
-
-		va_start(vl, fmt);
-		vsprintf_s(buffer, sizeof(buffer), fmt, vl);
-		va_end(vl);
-
-		message("You %s", buffer);
+		Misc::Message(String::Concat("You ",fmt));
 	}
 
 
@@ -123,7 +126,7 @@ namespace QHack {
 	void more(void)
 	{
 		SysDep::cursor(mbuffer_x, 0);
-		SysDep::set_color(C_WHITE);
+		SysDep::set_color(ConsoleColor::White);
 		SysDep::prtstr("(more)");
 		while (SysDep::getkey() != ' ');
 		Misc::clear_messages();
@@ -156,7 +159,7 @@ namespace QHack {
 		*x = xp;
 		*y = yp;
 
-		message("Which direction? ");
+		Message("Which direction? ");
 		c = SysDep::getkey();
 		clear_messages();
 

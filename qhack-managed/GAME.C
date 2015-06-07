@@ -74,7 +74,7 @@ namespace QHack {
 
 			/* Display the player and center the cursor. */
 			Dungeon::map_cursor(Dungeon::d.px, Dungeon::d.py);
-			SysDep::set_color(C_WHITE);
+			SysDep::set_color(ConsoleColor::White);
 			SysDep::prtchar('@');
 			Dungeon::map_cursor(Dungeon::d.px, Dungeon::d.py);
 
@@ -433,7 +433,7 @@ namespace QHack {
 	void Game::descend_level(void)
 	{
 		if (Dungeon::tile_at(Dungeon::d.px, Dungeon::d.py) != STAIR_DOWN)
-			Misc::you("don't see any stairs leading downwards.");
+			Misc::You("don't see any stairs leading downwards.");
 		else
 		{
 			modify_dungeon_level(+1);
@@ -451,7 +451,7 @@ namespace QHack {
 	void Game::ascend_level(void)
 	{
 		if (Dungeon::tile_at(Dungeon::d.px, Dungeon::d.py) != STAIR_UP)
-			Misc::you("don't see any stairs leading upwards.");
+			Misc::You("don't see any stairs leading upwards.");
 		else
 		{
 			if (Dungeon::d.dl)
@@ -487,20 +487,20 @@ namespace QHack {
 		switch (Dungeon::tile_at(tx, ty))
 		{
 		case OPEN_DOOR:
-			Misc::message("This door is already open.");
+			Misc::Message("This door is already open.");
 			break;
 
 		case CLOSED_DOOR:
-			Misc::you("open the door.");
+			Misc::You("open the door.");
 			Dungeon::change_door(tx, ty, OPEN_DOOR);
 			break;
 
 		case LOCKED_DOOR:
-			Misc::message("This door seems to be locked.");
+			Misc::Message("This door seems to be locked.");
 			break;
 
 		default:
-			Misc::message("Which door?");
+			Misc::Message("Which door?");
 			break;
 		}
 	}

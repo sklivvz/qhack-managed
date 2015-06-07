@@ -603,7 +603,7 @@ namespace QHack {
 	{
 		if (x <  0 || y < 0 || x > MAP_W || y > MAP_H || !is_known(x, y))
 		{
-			SysDep::set_color(C_BLACK);
+			SysDep::set_color(ConsoleColor::Black);
 			SysDep::prtchar(' ');
 		}
 		else
@@ -725,17 +725,17 @@ namespace QHack {
 		switch (tile)
 		{
 		case ROCK:
-			SysDep::set_color(C_DARK_GRAY);
+			SysDep::set_color(ConsoleColor::DarkGray);
 			break;
 		case FLOOR:
-			SysDep::set_color(C_LIGHT_GRAY);
+			SysDep::set_color(ConsoleColor::Gray);
 			break;
 		case STAIR_UP:
 		case STAIR_DOWN:
-			SysDep::set_color(C_WHITE);
+			SysDep::set_color(ConsoleColor::White);
 			break;
 		default:
-			SysDep::set_color(C_BROWN);
+			SysDep::set_color(ConsoleColor::DarkYellow);
 			break;
 		}
 	}

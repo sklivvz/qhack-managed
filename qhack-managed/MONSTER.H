@@ -81,7 +81,7 @@ namespace QHack {
 		char symbol;
 
 		/* The color of the monster. */
-		byte color;
+		ConsoleColor color;
 
 		/* It's name. */
 		char *name;
@@ -132,7 +132,7 @@ namespace QHack {
 		static _BOOL is_monster_at(coord, coord);
 
 		static byte monster_tile(byte);
-		static byte monster_color(byte);
+		static ConsoleColor monster_color(byte);
 
 		static struct monster *get_monster_at(coord, coord);
 

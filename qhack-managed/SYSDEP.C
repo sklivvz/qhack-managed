@@ -88,7 +88,7 @@ namespace QHack {
 
 	void SysDep::clean_up_io(void)
 	{
-		set_color(C_LIGHT_GRAY);
+		set_color(ConsoleColor::Gray);
 		clear_screen();
 	}
 
@@ -159,16 +159,9 @@ namespace QHack {
 	 * Print a string to the screen using the standard I/O functionality.
 	 */
 
-	void SysDep::stdprtstr(char *fmt, ...)
+	void SysDep::stdprtstr(char *fmt)
 	{
-		va_list vl;
-		static char buffer[1000];
-
-		va_start(vl, fmt);
-		vsprintf_s(buffer, sizeof(buffer), fmt, vl);
-		va_end(vl);
-
-		printf("%s", buffer);
+		printf("%s", fmt);
 		fflush(stdout);
 	}
 
@@ -199,9 +192,8 @@ namespace QHack {
 	/*
 	 * Set a given color.
 	 */
-
-	void SysDep::set_color(byte c)
+	void SysDep::set_color(ConsoleColor c)
 	{
-		Console::ForegroundColor = (ConsoleColor) c;
+		Console::ForegroundColor = c;
 	}
 }
